@@ -10,7 +10,11 @@ module.exports = {
     "./node_modules/@smartive-education/design-system-component-library-lobsome/dist/esm/components/**/*.js"
   ],
   theme: {
-    extend: {},
+    container: {
+      center: true,
+    },
+    extend: {
+    },
   },
   plugins: [],
 };
