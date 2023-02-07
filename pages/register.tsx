@@ -13,7 +13,6 @@ import {
 } from "@smartive-education/design-system-component-library-lobsome";
 
 export default function Home() {
-    // const {data: session} = useSession();
 
     return (
         <>
@@ -28,7 +27,18 @@ export default function Home() {
 
                     <div className="flex items-center justify-center h-screen">
                         <div className="space-y-2">
-                            <Heading color={HeadingColors.SLATE}>Anmelden</Heading>
+
+                            <div className="mb-8">
+                                <Heading color={HeadingColors.SLATE}>Registrieren</Heading>
+                            </div>
+                            <Input
+                                label="Vorname Name"
+                            >
+                            </Input>
+                            <Input
+                                label="User Name"
+                            >
+                            </Input>
                             <Input
                                 label="E-Mail"
                             >
@@ -47,35 +57,13 @@ export default function Home() {
                             >
                                 <SvgMumble/>
                             </Button>
-                            <Label size={LabelSizes.s}>Noch kein Account?</Label>
-                            <Link hasUnderline={true}> Jetzt registrieren</Link>
+                            <Label size={LabelSizes.s}>Bereits registriert?</Label>
+                            <Link hasUnderline={true}> Jetzt anmelden</Link>
                         </div>
                     </div>
 
                 </div>
             </div>
-
-
-            {/*<Head>*/}
-            {/*  <title>Login</title>*/}
-            {/*  <link rel="icon" href="/favicon.ico" />*/}
-            {/*</Head>*/}
-
-            {/*<main>*/}
-            {/*  {!!session && (*/}
-            {/*    <a href="#" onClick={() => signOut()}>*/}
-            {/*      <h2>Logout &rarr;</h2>*/}
-            {/*      <p>Logout from your account</p>*/}
-            {/*    </a>*/}
-            {/*  )}*/}
-
-            {/*  {!session && (*/}
-            {/*    <a href="#" onClick={() => signIn("zitadel")}>*/}
-            {/*      <h2>Login &rarr;</h2>*/}
-            {/*      <p>Login with a ZITADEL account</p>*/}
-            {/*    </a>*/}
-            {/*  )}*/}
-            {/*</main>*/}
         </>
     );
 }
