@@ -56,10 +56,15 @@ export default function PageHome({
                   />
                 </div>
                 <div className="mb-1">
-                  <Label size={LabelSizes.m}>Damian Caduff</Label>
+                  <Label size={LabelSizes.m}>
+                    {post.creator.firstName} {post.creator.lastName}
+                  </Label>
                 </div>
                 <div className="flex space-x-5 mb-6">
-                  <IconLink color={IconLinkColors.VIOLET} label="damiancaduff">
+                  <IconLink
+                    color={IconLinkColors.VIOLET}
+                    label={post.creator.userName}
+                  >
                     <SvgProfile />
                   </IconLink>
                   <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
@@ -67,10 +72,7 @@ export default function PageHome({
                   </IconLink>
                 </div>
                 <div className="mb-6">
-                  <Paragraph size={ParagraphSizes.m}>
-                    Laoreet tincidunt vulputate in commodo. Sed vestibulum
-                    interdum sed neque.
-                  </Paragraph>
+                  <Paragraph size={ParagraphSizes.m}>{post.text}</Paragraph>
                 </div>
                 <div className="flex space-x-1 mb-8">
                   <Link>#casfee</Link>
@@ -79,10 +81,10 @@ export default function PageHome({
                 </div>
                 <div className="flex relative -left-3 space-x-8">
                   <InteractionButton label="Comments" type={ActionType.REPLY}>
-                    Comments
+                    {post.replyCount} Comments
                   </InteractionButton>
                   <InteractionButton label="Likes" type={ActionType.LIKE}>
-                    Likes
+                    {post.likeCount} Likes
                   </InteractionButton>
                   <InteractionButton label="Share" type={ActionType.SHARE}>
                     Share
