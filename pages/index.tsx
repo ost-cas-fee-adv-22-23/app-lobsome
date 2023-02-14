@@ -20,8 +20,7 @@ type PageProps = {};
 export default function PageHome({}: PageProps): InferGetStaticPropsType<
   typeof getServerSideProps
 > {
-  const { t, lang } = useTranslation("index");
-  const title = t("title");
+  const { t } = useTranslation();
 
   return (
     <>
@@ -41,7 +40,7 @@ export default function PageHome({}: PageProps): InferGetStaticPropsType<
         DE
       </Button>
 
-      <Heading tag={HeadingTags.HEADING3}>{title}</Heading>
+      <Heading tag={HeadingTags.HEADING3}>{t("index:title")}</Heading>
 
       <div className="bg-slate-100 p-10">
         <div className="w-[680px]">
