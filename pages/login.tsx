@@ -12,12 +12,18 @@ import {
   SvgMumble,
 } from "@smartive-education/design-system-component-library-lobsome";
 import { signIn } from "next-auth/react";
+import React from "react";
+import Head from "next/head";
 
 export default function Home() {
   // const {data: session} = useSession();
 
   return (
     <>
+      <Head>
+        <title>Login</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="flex items-stretch bg-grey-lighter min-h-screen">
         <div className="bg-gradient-to-br from-pink-500 to-violet-600 flex-1 text-grey-darker text-center bg-grey-light ">
           <div className="flex items-center justify-center h-screen">
@@ -42,7 +48,7 @@ export default function Home() {
                 label="Let's mumble"
                 size={ButtonSizes.M}
                 fullWidth={true}
-                onClick={() => signIn("zitadel", { callbackUrl: '/' })}
+                onClick={() => signIn("zitadel", { callbackUrl: "/" })}
               >
                 <SvgMumble />
               </Button>
