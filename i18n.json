@@ -2,6 +2,8 @@
   "locales": ["de", "en"],
   "defaultLocale": "de",
   "pages": {
-    "/": ["index"]
+    "/": ["index", "login"],
+    "/login": ["login"],
+    "/register": ["register"]
   }
 }

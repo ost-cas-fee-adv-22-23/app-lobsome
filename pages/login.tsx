@@ -14,12 +14,33 @@ import {
 import { signIn } from "next-auth/react";
 import React from "react";
 import Head from "next/head";
+import useTranslation from "next-translate/useTranslation";
+import setLanguage from "next-translate/setLanguage";
 
 export default function Home() {
   // const {data: session} = useSession();
+  const { t } = useTranslation();
 
   return (
     <>
+      <div className="absolute right-0 flex space-x-1 p-5 bottom-0  ">
+        <Button
+          color={ButtonColors.VIOLET}
+          size={ButtonSizes.M}
+          onClick={async () => await setLanguage("en")}
+        >
+          EN
+        </Button>
+
+        <Button
+          color={ButtonColors.VIOLET}
+          size={ButtonSizes.M}
+          onClick={async () => await setLanguage("de")}
+        >
+          DE
+        </Button>
+      </div>
+
       <Head>
         <title>Login</title>
         <link rel="icon" href="/favicon.ico" />
@@ -35,9 +56,9 @@ export default function Home() {
         <div className="flex-1 text-grey-darker bg-grey-light ">
           <div className="flex items-center justify-center h-screen">
             <div className="space-y-2">
-              <Heading color={HeadingColors.SLATE}>Anmelden</Heading>
-              <Input label="E-Mail"></Input>
-              <Input type="password" label="Password">
+              <Heading color={HeadingColors.SLATE}>{t("login:title")}</Heading>
+              <Input label={t("login:label-email")}></Input>
+              <Input label={t("login:label-password")}>
                 <SvgEye />
               </Input>
 
@@ -45,15 +66,17 @@ export default function Home() {
 
               <Button
                 color={ButtonColors.GRADIENT}
-                label="Let's mumble"
+                label={t("login:label-login")}
                 size={ButtonSizes.M}
                 fullWidth={true}
                 onClick={() => signIn("zitadel", { callbackUrl: "/" })}
               >
                 <SvgMumble />
               </Button>
-              <Label size={LabelSizes.s}>Noch kein Account?</Label>
-              <Link hasUnderline={true}> Jetzt registrieren</Link>
+              <Label size={LabelSizes.s}>{t("login:label-register")}</Label>
+              <Link href={"/register"} hasUnderline={true}>
+                {t("login:link-register")}
+              </Link>
             </div>
           </div>
         </div>

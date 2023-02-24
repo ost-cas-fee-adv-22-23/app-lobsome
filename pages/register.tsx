@@ -1,69 +1,83 @@
 import {
-    Button,
-    ButtonColors,
-    ButtonSizes,
-    Heading,
-    HeadingColors,
-    Input,
-    Label,
-    LabelSizes,
-    Link,
-    SvgEye,
-    SvgMumble
+  Button,
+  ButtonColors,
+  ButtonSizes,
+  Heading,
+  HeadingColors,
+  Input,
+  Label,
+  LabelSizes,
+  Link,
+  SvgEye,
+  SvgMumble,
 } from "@smartive-education/design-system-component-library-lobsome";
+import useTranslation from "next-translate/useTranslation";
+import setLanguage from "next-translate/setLanguage";
+import React from "react";
 
 export default function Home() {
+  const { t } = useTranslation();
 
-    return (
-        <>
-            <div className="flex items-stretch bg-grey-lighter min-h-screen">
-                <div
-                    className="bg-gradient-to-br from-pink-500 to-violet-600 flex-1 text-grey-darker text-center bg-grey-light ">
-                    <div className="flex items-center justify-center h-screen">
-                        <Heading color={HeadingColors.WHITE}>Find out what’s new in <span>#fashion</span></Heading>
-                    </div>
-                </div>
-                <div className="flex-1 text-grey-darker text-center bg-grey-light ">
+  return (
+    <>
+      <div className="absolute right-0 flex space-x-1 p-5 bottom-0  ">
+        <Button
+          color={ButtonColors.VIOLET}
+          size={ButtonSizes.M}
+          onClick={async () => await setLanguage("en")}
+        >
+          EN
+        </Button>
 
-                    <div className="flex items-center justify-center h-screen">
-                        <div className="space-y-2">
+        <Button
+          color={ButtonColors.VIOLET}
+          size={ButtonSizes.M}
+          onClick={async () => await setLanguage("de")}
+        >
+          DE
+        </Button>
+      </div>
+      <div className="flex items-stretch bg-grey-lighter min-h-screen">
+        <div className="bg-gradient-to-br from-pink-500 to-violet-600 flex-1 text-grey-darker text-center bg-grey-light ">
+          <div className="flex items-center justify-center h-screen">
+            <Heading color={HeadingColors.WHITE}>
+              Find out what’s new in <span>#fashion</span>
+            </Heading>
+          </div>
+        </div>
+        <div className="flex-1 text-grey-darker text-center bg-grey-light ">
+          <div className="flex items-center justify-center h-screen">
+            <div className="space-y-2">
+              <div className="mb-8">
+                <Heading color={HeadingColors.SLATE}>
+                  {t("register:title")}
+                </Heading>
+              </div>
+              <Input label={t("register:label-name")}></Input>
+              <Input label={t("register:label-username")}></Input>
+              <Input label={t("register:label-mail")}></Input>
+              <Input label={t("register:label-password")}>
+                <SvgEye />
+              </Input>
 
-                            <div className="mb-8">
-                                <Heading color={HeadingColors.SLATE}>Registrieren</Heading>
-                            </div>
-                            <Input
-                                label="Vorname Name"
-                            >
-                            </Input>
-                            <Input
-                                label="User Name"
-                            >
-                            </Input>
-                            <Input
-                                label="E-Mail"
-                            >
-                            </Input>
-                            <Input
-                                label="Password"
-                            >
-                                <SvgEye/>
-                            </Input>
-
-                            <Button
-                                color={ButtonColors.GRADIENT}
-                                label="Let's mumble"
-                                size={ButtonSizes.M}
-                                fullWidth={true}
-                            >
-                                <SvgMumble/>
-                            </Button>
-                            <Label size={LabelSizes.s}>Bereits registriert?</Label>
-                            <Link hasUnderline={true}> Jetzt anmelden</Link>
-                        </div>
-                    </div>
-
-                </div>
+              <Button
+                color={ButtonColors.GRADIENT}
+                label={t("register:label-submit")}
+                size={ButtonSizes.M}
+                fullWidth={true}
+              >
+                <SvgMumble />
+              </Button>
+              <Label size={LabelSizes.s}>
+                {t("register:label-already-registered")}
+              </Label>
+              <Link href={"/login"} hasUnderline={true}>
+                {t("register:link-go-to-login")}
+              </Link>
             </div>
-        </>
-    );
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

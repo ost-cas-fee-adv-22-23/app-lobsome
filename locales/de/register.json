@@ -1,0 +1,10 @@
+{
+  "title": "Registrieren",
+  "label-name": "Vorname Name",
+  "label-username": "Username",
+  "label-mail": "E-Mail",
+  "label-password": "Passwort",
+  "label-submit": "Lass und mumbeln",
+  "label-already-registered": "Bereits registriert?",
+  "link-go-to-login": "Jetzt anmelden"
+}
