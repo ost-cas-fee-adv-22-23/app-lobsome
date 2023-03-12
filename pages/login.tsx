@@ -12,12 +12,13 @@ import {
   SvgMumble,
 } from "@smartive-education/design-system-component-library-lobsome";
 import { signIn } from "next-auth/react";
-import React from "react";
+import React, {useState} from "react";
 import Head from "next/head";
 import useTranslation from "next-translate/useTranslation";
 import setLanguage from "next-translate/setLanguage";
 
 export default function Home() {
+  const [showPassword, setShowPassword] = useState(false);
   // const {data: session} = useSession();
   const { t } = useTranslation();
 
@@ -56,6 +57,10 @@ export default function Home() {
         <div className="flex-1 text-grey-darker bg-grey-light ">
           <div className="flex items-center justify-center h-screen">
             <div className="space-y-2">
+              <Heading color={HeadingColors.SLATE}>Anmelden</Heading>
+              <Input label="E-Mail"></Input>
+              <Input type={showPassword ? 'text' : 'password'} label="Password">
+                <SvgEye onClick={() => setShowPassword(!showPassword)} />
               <Heading color={HeadingColors.SLATE}>{t("login:title")}</Heading>
               <Input label={t("login:label-email")}></Input>
               <Input label={t("login:label-password")}>
