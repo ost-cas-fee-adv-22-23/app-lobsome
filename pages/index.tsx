@@ -2,7 +2,6 @@ import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import {
   Button,
   ButtonColors,
-  ButtonSizes,
   Card,
   Heading,
   HeadingTags,
@@ -13,7 +12,6 @@ import {
   Textarea,
 } from "@smartive-education/design-system-component-library-lobsome";
 import useTranslation from "next-translate/useTranslation";
-import setLanguage from "next-translate/setLanguage";
 
 type PageProps = {};
 
@@ -24,22 +22,6 @@ export default function PageHome({}: PageProps): InferGetStaticPropsType<
 
   return (
     <>
-      <Button
-        color={ButtonColors.VIOLET}
-        size={ButtonSizes.M}
-        onClick={async () => await setLanguage("en")}
-      >
-        EN
-      </Button>
-
-      <Button
-        color={ButtonColors.VIOLET}
-        size={ButtonSizes.M}
-        onClick={async () => await setLanguage("de")}
-      >
-        DE
-      </Button>
-
       <Heading tag={HeadingTags.HEADING3}>{t("index:title")}</Heading>
 
       <div className="bg-slate-100 p-10">

@@ -1,0 +1,10 @@
+{
+  "title": "Sign up",
+  "label-name": "Firstname Lastname",
+  "label-username": "Username",
+  "label-mail": "Mail",
+  "label-password": "Password",
+  "label-submit": "Let's mumble",
+  "label-already-registered": "Already registered?",
+  "link-go-to-login": "Sign in"
+}
