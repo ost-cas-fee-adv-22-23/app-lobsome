@@ -2,6 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-}
+};
 
-module.exports = nextConfig
+const nextTranslate = require("next-translate");
+
+module.exports = nextConfig;
+
+module.exports = nextTranslate({
+  webpack: (config, { isServer, webpack }) => {
+    return config;
+  },
+});
