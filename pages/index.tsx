@@ -18,7 +18,7 @@ import {
     SvgProfile,
     SvgTime,
 } from '@smartive-education/design-system-component-library-lobsome';
-import { PostInterface, ResponseInterface } from './post.interface';
+import { PostInterface, ResponseInterface } from '../data/post.interface';
 
 type PageProps = { posts: ResponseInterface<PostInterface> };
 
