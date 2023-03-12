@@ -1,29 +1,24 @@
-import { GetServerSideProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import {
-  ActionType,
-  Avatar,
-  AvatarSize,
-  Button,
-  ButtonColors,
-  Card,
-  Heading,
-  HeadingColors,
-  HeadingTags,
-  IconLink,
-  IconLinkColors,
-  InteractionButton,
-  Label,
-  LabelSizes,
-  Link,
-  Paragraph,
-  ParagraphSizes,
-  SvgProfile,
-  SvgSend,
-  SvgTime,
-  SvgUpload,
-  Textarea,
-} from "@smartive-education/design-system-component-library-lobsome";
-import { PostInterface, ResponseInterface } from "./post.interface";
+    ActionType,
+    Avatar,
+    AvatarSize,
+    Card,
+    Heading,
+    HeadingColors,
+    HeadingTags,
+    IconLink,
+    IconLinkColors,
+    InteractionButton,
+    Label,
+    LabelSizes,
+    Link,
+    Paragraph,
+    ParagraphSizes,
+    SvgProfile,
+    SvgTime,
+} from '@smartive-education/design-system-component-library-lobsome';
+import { PostInterface, ResponseInterface } from './post.interface';
 
 type PageProps = { posts: ResponseInterface<PostInterface> };
 
