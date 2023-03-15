@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import {
   Button,
   ButtonColors,
@@ -11,44 +11,30 @@ import {
   SvgSend,
   SvgUpload,
   Textarea,
-} from "@smartive-education/design-system-component-library-lobsome";
-import useTranslation from "next-translate/useTranslation";
-import setLanguage from "next-translate/setLanguage";
+} from '@smartive-education/design-system-component-library-lobsome';
+import useTranslation from 'next-translate/useTranslation';
+import setLanguage from 'next-translate/setLanguage';
 
-type PageProps = {};
-
-export default function PageHome({}: PageProps): InferGetStaticPropsType<
-  typeof getServerSideProps
-> {
+export default function PageHome(): InferGetStaticPropsType<typeof getServerSideProps> {
   const { t } = useTranslation();
 
   return (
     <>
-      <Button
-        color={ButtonColors.VIOLET}
-        size={ButtonSizes.M}
-        onClick={async () => await setLanguage("en")}
-      >
+      <Button color={ButtonColors.VIOLET} size={ButtonSizes.M} onClick={async () => await setLanguage('en')}>
         EN
       </Button>
 
-      <Button
-        color={ButtonColors.VIOLET}
-        size={ButtonSizes.M}
-        onClick={async () => await setLanguage("de")}
-      >
+      <Button color={ButtonColors.VIOLET} size={ButtonSizes.M} onClick={async () => await setLanguage('de')}>
         DE
       </Button>
 
-      <Heading tag={HeadingTags.HEADING3}>{t("index:title")}</Heading>
+      <Heading tag={HeadingTags.HEADING3}>{t('index:title')}</Heading>
 
       <div className="bg-slate-100 p-10">
         <div className="w-[680px]">
           <Card>
             <Heading tag={HeadingTags.HEADING3}>Voll leer hier! 😲</Heading>
-            <Paragraph size={ParagraphSizes.m}>
-              Verfasse deinen ersten Mumble oder folge anderen Usern!
-            </Paragraph>
+            <Paragraph size={ParagraphSizes.m}>Verfasse deinen ersten Mumble oder folge anderen Usern!</Paragraph>
             <div className="mt-8 mb-4">
               <Textarea placeholder="Und was meinst du dazu?" />
             </div>
@@ -67,5 +53,5 @@ export default function PageHome({}: PageProps): InferGetStaticPropsType<
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => ({
-  props: { posts: require("../data/posts.json") },
+  props: { posts: require('../data/posts.json') },
 });

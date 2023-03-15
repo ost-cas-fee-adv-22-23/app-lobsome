@@ -1,5 +1,6 @@
 {
   "extends": [
-    "@smartive/eslint-config/react"
+    "@smartive/eslint-config/react",
+    "prettier"
   ]
 }
