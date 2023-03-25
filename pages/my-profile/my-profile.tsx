@@ -1,4 +1,3 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import {
   ActionType,
   Avatar,
@@ -13,42 +12,43 @@ import {
   IconLinkColors,
   InteractionButton,
   Label,
-  LabelColors,
   LabelSizes,
   Link,
   Paragraph,
   ParagraphSizes,
   SvgCalendar,
-  SvgCancel,
+  SvgEdit,
   SvgLocation,
   SvgProfile,
+  SvgSettings,
   SvgTime,
+  Tabs,
 } from '@smartive-education/design-system-component-library-lobsome';
 
-type Props = {
-  profile: {
-    alias: string;
-  };
-};
-
-export default function ProfilePage({ profile }: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
+export default function MyProfilePage() {
   return (
     <>
-      <h1>{profile.alias}</h1>
-
       <div className="bg-slate-100 p-10 flex items-center justify-center ">
         <div className="w-[680px]">
           <div className="space-y-8">
             <div className="relative ">
               <div className="absolute -bottom-24 right-8">
                 <Avatar alt="" showBorder size={AvatarSize.XL} src="https://i.pravatar.cc/" />
+                <div className="absolute -mt-14 right-4">
+                  <Button color={ButtonColors.SLATE} label="Button Test" showOnlyIcon size={ButtonSizes.M}>
+                    <SvgEdit />
+                  </Button>
+                </div>
               </div>
               <div>
                 <img className="rounded-2xl	" src="https://placedog.net/680/320" alt="" />
               </div>
             </div>
             <div className="mt-6">
-              <Heading tag={HeadingTags.HEADING3}>Damian Caduff</Heading>
+              <div className="flex items-center space-x-2">
+                <Heading tag={HeadingTags.HEADING3}>Damian Caduff</Heading>
+                <SvgSettings />
+              </div>
               <div className="flex space-x-5 mt-2">
                 <IconLink color={IconLinkColors.VIOLET} label="damiancaduff">
                   <SvgProfile />
@@ -68,17 +68,27 @@ export default function ProfilePage({ profile }: Props): InferGetServerSideProps
                 </Paragraph>
               </div>
             </div>
-            <div className="flex justify-end items-center space-x-5 mb-7">
-              <Label size={LabelSizes.m} color={LabelColors.SLATE}>
-                Du folgst Damian Caduff
-              </Label>
-              <Button color={ButtonColors.SLATE} label="Unfollow" size={ButtonSizes.M}>
-                <SvgCancel />
-              </Button>
+            <div className="flex  items-center space-x-5 mb-7">
+              <Tabs
+                activeId={1}
+                items={[
+                  {
+                    id: 1,
+                    label: 'Meine Mumbles',
+                  },
+                  {
+                    id: 2,
+                    label: 'Deine Likes',
+                  },
+                ]}
+                onChange={function noRefCheck() {
+                  console.log('clicked');
+                }}
+              />
             </div>
           </div>
 
-          <div className="mt-8 space-y-4">
+          <div className="mt-4 space-y-4">
             <Card>
               {/* mumble */}
               <div>
@@ -125,11 +135,3 @@ export default function ProfilePage({ profile }: Props): InferGetServerSideProps
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({ query: { alias } }) => {
-  return {
-    props: {
-      profile: { alias },
-    },
-  };
-};
