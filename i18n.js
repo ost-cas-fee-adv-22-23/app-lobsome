@@ -1,10 +1,10 @@
-const hoistNonReactStatics = require('hoist-non-react-statics');
+import hoistNonReactStatics from 'hoist-non-react-statics';
 
 module.exports = {
-  "locales": ["en"],
-  "defaultLocale": "en",
-  "pages": {
-    "*": ["common"],
+  locales: ['en'],
+  defaultLocale: 'en',
+  pages: {
+    '*': ['common'],
   },
-  "staticsHoc": hoistNonReactStatics
-}
+  staticsHoc: hoistNonReactStatics,
+};

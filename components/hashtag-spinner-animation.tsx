@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 interface HashtagSpinnerAnimationProps {
   keywords?: string[];
 }
 
 export const HashtagSpinnerAnimation = ({
-  keywords = ["fashion", "politics", "tech", "lifestyle", "sports"],
+  keywords = ['fashion', 'politics', 'tech', 'lifestyle', 'sports'],
 }: HashtagSpinnerAnimationProps) => {
   const [keyword, setKeyword] = useState(keywords[0]);
   const [index, setIndex] = useState(0);

@@ -1,29 +1,27 @@
-import NextAuth from "next-auth";
+import NextAuth from 'next-auth';
 
 export default NextAuth({
   providers: [
     {
-      id: "zitadel",
-      name: "zitadel",
-      type: "oauth",
-      version: "2",
+      id: 'zitadel',
+      name: 'zitadel',
+      type: 'oauth',
+      version: '2',
       wellKnown: process.env.ZITADEL_ISSUER,
-      clientId: "181236603920908545@cas_fee_adv_qwacker_prod",
+      clientId: '181236603920908545@cas_fee_adv_qwacker_prod',
       authorization: {
         params: {
-          scope: "openid email profile",
+          scope: 'openid email profile',
         },
       },
       idToken: true,
-      checks: ["pkce", "state"],
+      checks: ['pkce', 'state'],
       client: {
-        token_endpoint_auth_method: "none",
+        token_endpoint_auth_method: 'none',
       },
       async profile(_, { access_token }) {
         const { userinfo_endpoint } = await (
-          await fetch(
-            `${process.env.ZITADEL_ISSUER}/.well-known/openid-configuration`
-          )
+          await fetch(`${process.env.ZITADEL_ISSUER}/.well-known/openid-configuration`)
         ).json();
         const profile = await (
           await fetch(userinfo_endpoint, {
@@ -37,10 +35,7 @@ export default NextAuth({
           id: profile.sub,
           firstname: profile.given_name,
           lastname: profile.family_name,
-          username: profile.preferred_username.replace(
-            "@smartive.zitadel.cloud",
-            ""
-          ),
+          username: profile.preferred_username.replace('@smartive.zitadel.cloud', ''),
           avatarUrl: profile.picture || undefined,
         };
       },
@@ -67,6 +62,6 @@ export default NextAuth({
     maxAge: 12 * 60 * 60, // 12 hours
   },
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
 });

@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import {
   ActionType,
   Avatar,
@@ -22,16 +22,12 @@ import {
   SvgTime,
   SvgUpload,
   Textarea,
-} from "@smartive-education/design-system-component-library-lobsome";
-import { PostInterface, ResponseInterface } from "../data/post.interface";
-import useTranslation from "next-translate/useTranslation";
+} from '@smartive-education/design-system-component-library-lobsome';
+import { PostInterface, ResponseInterface } from '../data/post.interface';
 
 type PageProps = { posts: ResponseInterface<PostInterface> };
 
-export default function PageHome({
-  posts,
-}: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
-  const { t } = useTranslation();
+export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
   return (
     <>
       <div className="py-8">
@@ -39,17 +35,14 @@ export default function PageHome({
           Willkommen auf Mumble
         </Heading>
         <Heading color={HeadingColors.SLATE} tag={HeadingTags.HEADING4}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem,
-          exercitationem.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, exercitationem.
         </Heading>
       </div>
 
       <div className="py-8">
         <Card>
           <Heading tag={HeadingTags.HEADING3}>Voll leer hier! 😲</Heading>
-          <Paragraph size={ParagraphSizes.m}>
-            Verfasse deinen ersten Mumble oder folge anderen Usern!
-          </Paragraph>
+          <Paragraph size={ParagraphSizes.m}>Verfasse deinen ersten Mumble oder folge anderen Usern!</Paragraph>
           <div className="mt-8 mb-4">
             <Textarea placeholder="Und was meinst du dazu?" />
           </div>
@@ -68,12 +61,7 @@ export default function PageHome({
         {posts.data.map((post) => (
           <Card key={post.id}>
             <div className="absolute -left-8 top-4">
-              <Avatar
-                alt="Portrait of Matilda"
-                showBorder
-                size={AvatarSize.M}
-                src={post.creator.avatarUrl}
-              />
+              <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src={post.creator.avatarUrl} />
             </div>
             <div className="mb-1">
               <Label size={LabelSizes.m}>
@@ -81,10 +69,7 @@ export default function PageHome({
               </Label>
             </div>
             <div className="flex space-x-5 mb-6">
-              <IconLink
-                color={IconLinkColors.VIOLET}
-                label={post.creator.userName}
-              >
+              <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
                 <SvgProfile />
               </IconLink>
               <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
@@ -119,7 +104,7 @@ export default function PageHome({
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
-      posts: require("../data/posts.json"),
+      posts: require('../data/posts.json'),
     },
   };
 };

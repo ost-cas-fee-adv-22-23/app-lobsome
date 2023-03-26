@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
-import { Header } from "../header";
-import { Container } from "../container";
+import React, { ReactElement } from 'react';
+import { Header } from '../header';
+import { Container } from '../container';
 
 type LayoutProps = {
   children: ReactElement;

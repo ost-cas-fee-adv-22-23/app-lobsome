@@ -1,5 +1,5 @@
-import React from "react";
-import { ModalContainer } from "@smartive-education/design-system-component-library-lobsome";
+import React from 'react';
+import { ModalContainer } from '@smartive-education/design-system-component-library-lobsome';
 
 export interface SettingsModalProps {
   onClose: () => void;

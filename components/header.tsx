@@ -1,20 +1,15 @@
-import React, { useState } from "react";
-import {
-  Avatar,
-  AvatarSize,
-  SvgLogOut,
-  SvgSettings,
-} from "@smartive-education/design-system-component-library-lobsome";
-import Link from "next/link";
-import { Container } from "./container";
-import { signOut, useSession } from "next-auth/react";
-import { SettingsModal } from "./modals/settings-modal";
-import useTranslation from "next-translate/useTranslation";
+import React, { useState } from 'react';
+import { Avatar, AvatarSize, SvgLogOut, SvgSettings } from '@smartive-education/design-system-component-library-lobsome';
+import Link from 'next/link';
+import { Container } from './container';
+import { signOut, useSession } from 'next-auth/react';
+import { SettingsModal } from './modals/settings-modal';
+import useTranslation from 'next-translate/useTranslation';
 
 export const Header = () => {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const { data: session } = useSession();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
 
   return (
     <>
@@ -31,10 +26,7 @@ export const Header = () => {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g
-                    clipPath="url(#clip0_437_1086)"
-                    className="group-hover:scale-105 transition"
-                  >
+                  <g clipPath="url(#clip0_437_1086)" className="group-hover:scale-105 transition">
                     <path
                       d="M37.3333 40H26.6667C25.1406 40 23.7708 40.849 23.0885 42.2135C22.4062 43.5755 22.5521 45.1823 23.4661 46.3985L28.7995 53.513C29.5625 54.5287 30.7291 55.112 32 55.112C33.2709 55.112 34.4375 54.5287 35.2005 53.5104L40.5339 46.401C41.4479 45.1823 41.5938 43.5755 40.9115 42.2135C40.2292 40.849 38.8594 40 37.3333 40Z"
                       fill="white"
@@ -68,10 +60,7 @@ export const Header = () => {
                     d="M257.049 24.768C258.073 23.104 259.545 21.76 261.465 20.736C263.385 19.712 265.582 19.2 268.057 19.2C271.001 19.2 273.668 19.9467 276.057 21.44C278.446 22.9334 280.324 25.0667 281.689 27.84C283.097 30.6134 283.801 33.8347 283.801 37.504C283.801 41.1734 283.097 44.416 281.689 47.232C280.324 50.0054 278.446 52.16 276.057 53.696C273.668 55.1894 271.001 55.936 268.057 55.936C265.54 55.936 263.342 55.4454 261.465 54.464C259.588 53.44 258.116 52.096 257.049 50.432V55.424H246.105V8.06403H257.049V24.768ZM272.665 37.504C272.665 34.7734 271.897 32.64 270.361 31.104C268.868 29.5254 267.012 28.736 264.793 28.736C262.617 28.736 260.761 29.5254 259.225 31.104C257.732 32.6827 256.985 34.8374 256.985 37.568C256.985 40.2987 257.732 42.4534 259.225 44.032C260.761 45.6107 262.617 46.4 264.793 46.4C266.969 46.4 268.825 45.6107 270.361 44.032C271.897 42.4107 272.665 40.2347 272.665 37.504Z"
                     fill="white"
                   />
-                  <path
-                    d="M296.646 8.06403V55.424H285.702V8.06403H296.646Z"
-                    fill="white"
-                  />
+                  <path d="M296.646 8.06403V55.424H285.702V8.06403H296.646Z" fill="white" />
                   <path
                     d="M334.402 36.992C334.402 38.016 334.337 39.0827 334.21 40.192H309.441C309.612 42.4107 310.316 44.1174 311.553 45.312C312.833 46.464 314.391 47.04 316.226 47.04C318.956 47.04 320.855 45.888 321.922 43.584H333.57C332.972 45.9307 331.884 48.0427 330.306 49.92C328.77 51.7974 326.828 53.2694 324.482 54.336C322.135 55.4027 319.511 55.936 316.609 55.936C313.111 55.936 309.996 55.1894 307.266 53.696C304.535 52.2027 302.402 50.0694 300.866 47.296C299.33 44.5227 298.562 41.28 298.562 37.568C298.562 33.856 299.308 30.6134 300.801 27.84C302.337 25.0667 304.471 22.9334 307.202 21.44C309.932 19.9467 313.068 19.2 316.609 19.2C320.065 19.2 323.137 19.9254 325.826 21.376C328.514 22.8267 330.604 24.896 332.098 27.584C333.633 30.272 334.402 33.408 334.402 36.992ZM323.202 34.112C323.202 32.2347 322.562 30.7414 321.282 29.632C320.002 28.5227 318.402 27.968 316.482 27.968C314.647 27.968 313.09 28.5014 311.81 29.568C310.572 30.6347 309.804 32.1494 309.506 34.112H323.202Z"
                     fill="white"
@@ -88,10 +77,7 @@ export const Header = () => {
               <ul className="flex gap-4 items-center">
                 <li className="p-2">
                   <Link href="/my-profile">
-                    <Avatar
-                      src={session?.user.avatarUrl || "/images/anonymous.png"}
-                      size={AvatarSize.S}
-                    />
+                    <Avatar src={session?.user.avatarUrl || '/images/anonymous.png'} size={AvatarSize.S} />
                   </Link>
                 </li>
                 <li>
@@ -99,8 +85,10 @@ export const Header = () => {
                     onClick={() => setShowSettingsModal(true)}
                     className="flex flex-col items-center text-white transition group hover:bg-violet-700 p-2 rounded-lg"
                   >
-                    <SvgSettings className="group-hover:rotate-90 transition-all" />
-                    {t("header.settings")}
+                    <div className="group-hover:rotate-90 transition-all">
+                      <SvgSettings />
+                    </div>
+                    {t('header.settings')}
                   </a>
                 </li>
                 <li>
@@ -109,7 +97,7 @@ export const Header = () => {
                     className="flex flex-col items-center text-white transition hover:bg-violet-700 p-2 rounded-lg"
                   >
                     <SvgLogOut />
-                    {t("header.logout")}
+                    {t('header.logout')}
                   </a>
                 </li>
               </ul>
@@ -117,11 +105,7 @@ export const Header = () => {
           </div>
         </Container>
       </header>
-      {showSettingsModal && (
-        <SettingsModal
-          onClose={() => setShowSettingsModal(false)}
-        ></SettingsModal>
-      )}
+      {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)}></SettingsModal>}
     </>
   );
 };
