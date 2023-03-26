@@ -25,13 +25,18 @@ import {
 } from '@smartive-education/design-system-component-library-lobsome';
 import fetchPosts, { PostsResponse } from '../services/fetch-posts';
 import { useQuery } from '@tanstack/react-query';
+import { getToken } from 'next-auth/jwt';
+import { useSession } from 'next-auth/react';
 
 type PageProps = { posts: PostsResponse };
 
 export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
+  const { data } = useSession();
   const postsQuery = useQuery({
     queryKey: ['posts'],
-    queryFn: fetchPosts,
+    queryFn: () => {
+      return fetchPosts(data!.accessToken!);
+    },
     initialData: posts,
   });
 
@@ -65,7 +70,7 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
       </div>
 
       <div className="space-y-4">
-        {postsQuery.data.data.map((post) => (
+        {postsQuery.data.posts.map((post) => (
           <Card key={post.id}>
             <div className="absolute -left-8 top-4">
               <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src={post.creator.avatarUrl} />
@@ -109,7 +114,8 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
   );
 }
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const posts = await fetchPosts();
+  const jwt = await getToken({ req });
+  const posts = await fetchPosts(jwt!.accessToken!);
 
   return { props: { posts } };
 };
