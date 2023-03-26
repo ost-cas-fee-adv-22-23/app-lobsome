@@ -23,11 +23,18 @@ import {
   SvgUpload,
   Textarea,
 } from '@smartive-education/design-system-component-library-lobsome';
-import { PostInterface, ResponseInterface } from '../data/post.interface';
+import fetchPosts, { PostsResponse } from '../services/fetch-posts';
+import { useQuery } from '@tanstack/react-query';
 
-type PageProps = { posts: ResponseInterface<PostInterface> };
+type PageProps = { posts: PostsResponse };
 
 export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
+  const postsQuery = useQuery({
+    queryKey: ['posts'],
+    queryFn: fetchPosts,
+    initialData: posts,
+  });
+
   return (
     <>
       <div className="py-8">
@@ -58,7 +65,7 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
       </div>
 
       <div className="space-y-4">
-        {posts.data.map((post) => (
+        {postsQuery.data.data.map((post) => (
           <Card key={post.id}>
             <div className="absolute -left-8 top-4">
               <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src={post.creator.avatarUrl} />
@@ -101,10 +108,8 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
     </>
   );
 }
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {
-      posts: require('../data/posts.json'),
-    },
-  };
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const posts = await fetchPosts();
+
+  return { props: { posts } };
 };

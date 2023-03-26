@@ -4,6 +4,8 @@ import '../styles/globals.css';
 import React, { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
 import { Layout } from '../components/layout/layout';
+import { QueryClient } from '@tanstack/query-core';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -14,7 +16,13 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const queryClient = new QueryClient();
+
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
-  return <SessionProvider session={session}>{getLayout(<Component {...pageProps} />)}</SessionProvider>;
+  return (
+    <SessionProvider session={session}>
+      <QueryClientProvider client={queryClient}>{getLayout(<Component {...pageProps} />)}</QueryClientProvider>
+    </SessionProvider>
+  );
 }
