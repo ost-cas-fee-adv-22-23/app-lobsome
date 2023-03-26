@@ -4,12 +4,13 @@ const nextConfig = {
   swcMinify: true,
 };
 
-const nextTranslate = require("next-translate");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const nextTranslate = require('next-translate');
 
 module.exports = nextConfig;
 
 module.exports = nextTranslate({
-  webpack: (config, { isServer, webpack }) => {
+  webpack: (config) => {
     return config;
   },
 });
