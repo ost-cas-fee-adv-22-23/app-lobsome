@@ -1,7 +1,9 @@
-import { signIn, signOut, useSession } from 'next-auth/react';
-import Head from 'next/head';
+import { signIn, signOut, useSession } from "next-auth/react";
+import Head from "next/head";
+import { ReactElement } from "react";
+import { SplitScreenLayout } from "../components/layout/split-screen-layout";
 
-export default function Home() {
+function Login() {
   const { data: session } = useSession();
 
   return (
@@ -20,7 +22,7 @@ export default function Home() {
         )}
 
         {!session && (
-          <a href="#" onClick={() => signIn('zitadel')}>
+          <a href="#" onClick={() => signIn("zitadel")}>
             <h2>Login &rarr;</h2>
             <p>Login with a ZITADEL account</p>
           </a>
@@ -29,3 +31,9 @@ export default function Home() {
     </>
   );
 }
+
+Login.getLayout = (page: ReactElement) => (
+  <SplitScreenLayout>{page}</SplitScreenLayout>
+);
+
+export default Login;
