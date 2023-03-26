@@ -1,7 +1,9 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { ReactElement } from 'react';
+import { SplitScreenLayout } from '../components/layout/split-screen-layout';
 
-export default function Home() {
+function Login() {
   const { data: session } = useSession();
 
   return (
@@ -29,3 +31,7 @@ export default function Home() {
     </>
   );
 }
+
+Login.getLayout = (page: ReactElement) => <SplitScreenLayout>{page}</SplitScreenLayout>;
+
+export default Login;
