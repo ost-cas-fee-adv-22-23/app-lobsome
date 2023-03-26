@@ -1,4 +1,5 @@
-import hoistNonReactStatics from 'hoist-non-react-statics';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const hoistNonReactStatics = require('hoist-non-react-statics');
 
 module.exports = {
   locales: ['en'],
