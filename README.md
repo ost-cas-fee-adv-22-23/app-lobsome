@@ -76,13 +76,18 @@ For Example:
 feat(button): added hover and action styling for button
 ```
 
-### Husky pre-commit hook
+### next-translate
+The main goal of [next-translate](https://github.com/aralroca/next-translate) is to keep the translations as simple as possible in a Next.js environment.
 
-lorem
+Next-translate has two parts: Next.js plugin + i18n API.
 
-### or even more Tools?
 
-lorem is someone?
+
+### TanStack Query
+
+[TanStack Query](https://tanstack.com/query/v4/docs/react/overview) (FKA React Query) is often described as the missing data-fetching library for web applications, 
+but in more technical terms, it makes fetching, caching, synchronizing and updating server state in 
+your web applications a breeze.
 
 
 <br>
