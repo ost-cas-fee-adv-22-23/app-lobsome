@@ -1,45 +1,20 @@
-import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import {
-  ActionType,
-  Avatar,
-  AvatarSize,
   Button,
   ButtonColors,
   Card,
   Heading,
   HeadingColors,
   HeadingTags,
-  IconLink,
-  IconLinkColors,
-  InteractionButton,
-  Label,
-  LabelSizes,
-  Link,
   Paragraph,
   ParagraphSizes,
-  SvgProfile,
   SvgSend,
-  SvgTime,
   SvgUpload,
   Textarea,
 } from '@smartive-education/design-system-component-library-lobsome';
-import fetchPosts, { PostsResponse } from '../services/fetch-posts';
-import { useQuery } from '@tanstack/react-query';
-import { getToken } from 'next-auth/jwt';
-import { useSession } from 'next-auth/react';
 
-type PageProps = { posts: PostsResponse };
+//type PageProps = { posts: ResponseInterface<Post> };
 
-export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
-  const { data } = useSession();
-  const postsQuery = useQuery({
-    queryKey: ['posts'],
-    queryFn: () => {
-      return fetchPosts(data!.accessToken!);
-    },
-    initialData: posts,
-  });
-
+export default function PageHome() {
   return (
     <>
       <div className="py-8">
@@ -70,52 +45,51 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
       </div>
 
       <div className="space-y-4">
-        {postsQuery.data.posts.map((post) => (
-          <Card key={post.id}>
-            <div className="absolute -left-8 top-4">
-              <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src={post.creator.avatarUrl} />
-            </div>
-            <div className="mb-1">
-              <Label size={LabelSizes.m}>
-                {post.creator.firstName} {post.creator.lastName}
-              </Label>
-            </div>
-            <div className="flex space-x-5 mb-6">
-              <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
-                <SvgProfile />
-              </IconLink>
-              <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
-                <SvgTime />
-              </IconLink>
-            </div>
-            <div className="mb-6">
-              <Paragraph size={ParagraphSizes.m}>{post.text}</Paragraph>
-            </div>
-            <div className="flex space-x-1 mb-8">
-              <Link>#casfee</Link>
-              <Link>#goOST</Link>
-              <Link>#smartive</Link>
-            </div>
-            <div className="flex relative -left-3 space-x-8">
-              <InteractionButton label="Comments" type={ActionType.REPLY}>
-                {post.replyCount} Comments
-              </InteractionButton>
-              <InteractionButton label="Likes" type={ActionType.LIKE}>
-                {post.likeCount} Likes
-              </InteractionButton>
-              <InteractionButton label="Share" type={ActionType.SHARE}>
-                Share
-              </InteractionButton>
-            </div>
-          </Card>
-        ))}
+        {/*{postsQuery.data.data.map((post) => (*/}
+        {/*  <Card key={post.id}>*/}
+        {/*    <div className="absolute -left-8 top-4">*/}
+        {/*      <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src={post.creator.avatarUrl} />*/}
+        {/*    </div>*/}
+        {/*    <div className="mb-1">*/}
+        {/*      <Label size={LabelSizes.m}>*/}
+        {/*        {post.creator.firstName} {post.creator.lastName}*/}
+        {/*      </Label>*/}
+        {/*    </div>*/}
+        {/*    <div className="flex space-x-5 mb-6">*/}
+        {/*      <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>*/}
+        {/*        <SvgProfile />*/}
+        {/*      </IconLink>*/}
+        {/*      <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">*/}
+        {/*        <SvgTime />*/}
+        {/*      </IconLink>*/}
+        {/*    </div>*/}
+        {/*    <div className="mb-6">*/}
+        {/*      <Paragraph size={ParagraphSizes.m}>{post.text}</Paragraph>*/}
+        {/*    </div>*/}
+        {/*    <div className="flex space-x-1 mb-8">*/}
+        {/*      <Link>#casfee</Link>*/}
+        {/*      <Link>#goOST</Link>*/}
+        {/*      <Link>#smartive</Link>*/}
+        {/*    </div>*/}
+        {/*    <div className="flex relative -left-3 space-x-8">*/}
+        {/*      <InteractionButton label="Comments" type={ActionType.REPLY}>*/}
+        {/*        {post.replyCount} Comments*/}
+        {/*      </InteractionButton>*/}
+        {/*      <InteractionButton label="Likes" type={ActionType.LIKE}>*/}
+        {/*        {post.likeCount} Likes*/}
+        {/*      </InteractionButton>*/}
+        {/*      <InteractionButton label="Share" type={ActionType.SHARE}>*/}
+        {/*        Share*/}
+        {/*      </InteractionButton>*/}
+        {/*    </div>*/}
+        {/*  </Card>*/}
+        {/*))}*/}
       </div>
     </>
   );
 }
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const jwt = await getToken({ req });
-  const posts = await fetchPosts(jwt!.accessToken!);
-
-  return { props: { posts } };
-};
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+//   const posts = await fetchPosts();
+//
+//   return { props: { posts } };
+// };

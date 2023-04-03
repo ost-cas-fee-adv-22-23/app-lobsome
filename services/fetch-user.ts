@@ -11,7 +11,8 @@ export default async (id: string, token: string): Promise<User> => {
       },
     };
 
-    return getRequest<User>(`https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/users/${id}`, config);
+    const user = await getRequest<User>(`https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/users/${id}`, config);
+    return { ...user };
   } catch (e: any) {
     throw new Error(`Parsing posts error - ${e.message}`);
   }
