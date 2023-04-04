@@ -14,6 +14,7 @@ export default async (token: string, { offset = 0, limit = 10 }: PaginationParam
       headers: {
         Accept: 'application/json',
         'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     };
 
