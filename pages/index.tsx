@@ -11,13 +11,14 @@ import { useSession } from 'next-auth/react';
 import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import { useMutation } from '@tanstack/react-query';
 import createPost from '../services/create-post';
-import { getToken } from 'next-auth/jwt';
 import { WriteCard } from '../components/write-card';
 import { InfinitePostList } from '../components/infinite-post-list';
 import fetchPosts from '../services/fetch-posts';
 import { ResponseInterface } from '../types/generic-response';
+import { getServerSession, Session } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 
-type PageProps = { posts: ResponseInterface<Post> };
+type PageProps = { posts: ResponseInterface<Post>; session: Session };
 
 export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
   const { data: session } = useSession();
@@ -49,9 +50,9 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const jwt = await getToken({ req });
-  const posts = await fetchPosts(jwt!.accessToken!, { offset: 0, limit: 10 });
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(req, res, authOptions);
+  const posts = await fetchPosts(session!.accessToken!, { offset: 0, limit: 10 });
 
-  return { props: { posts } };
+  return { props: { posts, session } };
 };
