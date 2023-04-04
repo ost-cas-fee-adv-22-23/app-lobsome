@@ -1,0 +1,22 @@
+{
+  "header": {
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "welcome-message": "Find out what’s new in",
+  "modal": {
+    "file-upload": {
+      "title": "Image upload",
+      "upload-file-button": "... or select file",
+      "drag-title": "Drag file to here",
+      "drag-message": "JPEG or PNG, maximum 5 MB"
+
+    }
+  },
+  "write-card": {
+    "placeholder": "And what do you think about that?",
+    "upload-image": "upload image",
+    "submit": "submit"
+
+  }
+}
