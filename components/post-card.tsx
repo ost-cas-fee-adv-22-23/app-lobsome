@@ -8,28 +8,31 @@ import {
   InteractionButton,
   Label,
   LabelSizes,
-  Link,
+  Link as MumbleLink,
   Paragraph,
   ParagraphSizes,
   SvgProfile,
   SvgTime,
 } from '@smartive-education/design-system-component-library-lobsome';
 import Image from 'next/image';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Post } from '../types/post';
+import Link from 'next/link';
+import { formatDistance } from 'date-fns';
 
 type PostCardProps = {
   post: Post;
+  children?: ReactNode;
 };
 
-export const PostCard = ({ post }: PostCardProps) => {
+export const PostCard = ({ post, children }: PostCardProps) => {
   const wrapTags = () => {
     const textArray = post.text.split(' ');
     return textArray.map((str, index) => {
       if (str.startsWith('#')) {
         return (
           <React.Fragment key={index}>
-            <Link hasUnderline>{str}</Link>&nbsp;
+            <MumbleLink hasUnderline>{str}</MumbleLink>&nbsp;
           </React.Fragment>
         );
       }
@@ -56,9 +59,11 @@ export const PostCard = ({ post }: PostCardProps) => {
         <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
           <SvgProfile />
         </IconLink>
-        <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
-          <SvgTime />
-        </IconLink>
+        <Link href={'/mumble/' + post.id}>
+          <IconLink color={IconLinkColors.SLATE} label={formatDistance(new Date(post.createdAt), Date.now())}>
+            <SvgTime />
+          </IconLink>
+        </Link>
       </div>
       <div className="mb-6">
         <Paragraph size={ParagraphSizes.m}>{wrapTags()}</Paragraph>
@@ -77,6 +82,8 @@ export const PostCard = ({ post }: PostCardProps) => {
           Share
         </InteractionButton>
       </div>
+
+      {children}
     </Card>
   );
 };
