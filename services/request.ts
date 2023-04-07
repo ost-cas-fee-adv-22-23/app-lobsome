@@ -16,7 +16,8 @@ export async function getRequest<T>(path: string, config?: RequestInit): Promise
 }
 
 export async function postRequest<T, U>(path: string, body: T, config?: RequestInit): Promise<U> {
-  const init = { method: 'post', body: JSON.stringify(body), ...config };
+  const init = { method: 'post', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
+
   return await http<U>(path, init);
 }
 

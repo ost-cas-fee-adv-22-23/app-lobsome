@@ -1,38 +1,29 @@
-import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import {
-  ActionType,
-  Avatar,
-  AvatarSize,
-  Button,
-  ButtonColors,
   Card,
   Heading,
   HeadingColors,
   HeadingTags,
-  IconLink,
-  IconLinkColors,
-  InteractionButton,
-  Label,
-  LabelSizes,
-  Link,
   Paragraph,
   ParagraphSizes,
-  SvgProfile,
-  SvgSend,
-  SvgTime,
-  SvgUpload,
-  Textarea,
 } from '@smartive-education/design-system-component-library-lobsome';
-import fetchPosts, { PostsResponse } from '../services/fetch-posts';
-import { useQuery } from '@tanstack/react-query';
+import { CreatePost, Post } from '../types/post';
+import { useSession } from 'next-auth/react';
+import { GetServerSideProps, InferGetStaticPropsType } from 'next';
+import { useMutation } from '@tanstack/react-query';
+import createPost from '../services/create-post';
+import { WriteCard } from '../components/write-card';
+import { InfinitePostList } from '../components/infinite-post-list';
+import fetchPosts from '../services/fetch-posts';
+import { ResponseInterface } from '../types/generic-response';
+import { getServerSession, Session } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 
-type PageProps = { posts: PostsResponse };
+type PageProps = { posts: ResponseInterface<Post>; session: Session };
 
 export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
-  const postsQuery = useQuery({
-    queryKey: ['posts'],
-    queryFn: fetchPosts,
-    initialData: posts,
+  const { data: session } = useSession();
+  const mutation = useMutation({
+    mutationFn: (newPost: CreatePost) => createPost(session!.accessToken!, newPost),
   });
 
   return (
@@ -50,66 +41,18 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
         <Card>
           <Heading tag={HeadingTags.HEADING3}>Voll leer hier! 😲</Heading>
           <Paragraph size={ParagraphSizes.m}>Verfasse deinen ersten Mumble oder folge anderen Usern!</Paragraph>
-          <div className="mt-8 mb-4">
-            <Textarea placeholder="Und was meinst du dazu?" />
-          </div>
-          <div className="flex space-x-5">
-            <Button color={ButtonColors.SLATE} fullWidth>
-              Bild hochladen <SvgUpload />
-            </Button>
-            <Button color={ButtonColors.VIOLET} fullWidth>
-              Absenden <SvgSend />
-            </Button>
-          </div>
+          <WriteCard onSend={mutation.mutate} />
         </Card>
       </div>
 
-      <div className="space-y-4">
-        {postsQuery.data.data.map((post) => (
-          <Card key={post.id}>
-            <div className="absolute -left-8 top-4">
-              <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src={post.creator.avatarUrl} />
-            </div>
-            <div className="mb-1">
-              <Label size={LabelSizes.m}>
-                {post.creator.firstName} {post.creator.lastName}
-              </Label>
-            </div>
-            <div className="flex space-x-5 mb-6">
-              <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
-                <SvgProfile />
-              </IconLink>
-              <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
-                <SvgTime />
-              </IconLink>
-            </div>
-            <div className="mb-6">
-              <Paragraph size={ParagraphSizes.m}>{post.text}</Paragraph>
-            </div>
-            <div className="flex space-x-1 mb-8">
-              <Link>#casfee</Link>
-              <Link>#goOST</Link>
-              <Link>#smartive</Link>
-            </div>
-            <div className="flex relative -left-3 space-x-8">
-              <InteractionButton label="Comments" type={ActionType.REPLY}>
-                {post.replyCount} Comments
-              </InteractionButton>
-              <InteractionButton label="Likes" type={ActionType.LIKE}>
-                {post.likeCount} Likes
-              </InteractionButton>
-              <InteractionButton label="Share" type={ActionType.SHARE}>
-                Share
-              </InteractionButton>
-            </div>
-          </Card>
-        ))}
-      </div>
+      <InfinitePostList posts={posts} />
     </>
   );
 }
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const posts = await fetchPosts();
 
-  return { props: { posts } };
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(req, res, authOptions);
+  const posts = await fetchPosts(session!.accessToken!, { offset: 0, limit: 10 });
+
+  return { props: { posts, session } };
 };

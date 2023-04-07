@@ -21,3 +21,8 @@ export interface CreatorInterface {
   lastName: string;
   avatarUrl: string;
 }
+
+export interface CreatePost {
+  text: string;
+  file: File | null;
+}
