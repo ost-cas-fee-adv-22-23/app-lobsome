@@ -1,6 +1,7 @@
 import { getRequest } from './request';
 import fetchUser from './fetch-user';
-import { ApiReply, Reply } from '../types/replies';
+import { ApiReply, Reply } from '../types/reply';
+import { decodeTime } from 'ulid';
 
 export default async (id: string, token: string): Promise<Reply[]> => {
   try {
@@ -18,7 +19,7 @@ export default async (id: string, token: string): Promise<Reply[]> => {
     return await Promise.all(
       replyResponse.map(async (item) => {
         const user = await fetchUser(item.creator, token);
-        return { ...item, creator: user };
+        return { ...item, creator: user, createdAt: new Date(decodeTime(item.id)).toISOString() };
       })
     );
   } catch (e: any) {
