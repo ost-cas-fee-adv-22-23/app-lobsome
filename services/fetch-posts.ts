@@ -2,6 +2,7 @@ import { ApiPost, Post } from '../types/post';
 import { getRequest } from './request';
 import { ResponseInterface } from '../types/generic-response';
 import fetchUser from './fetch-user';
+import { decodeTime } from 'ulid';
 
 export interface PaginationParams {
   offset: number;
@@ -25,7 +26,7 @@ export default async (token: string, { offset = 0, limit = 10 }: PaginationParam
     const posts: Post[] = await Promise.all(
       postsResponse.data.map(async (item) => {
         const user = await fetchUser(item.creator, token);
-        return { ...item, creator: user };
+        return { ...item, creator: user, createdAt: new Date(decodeTime(item.id)).toISOString() };
       })
     );
 

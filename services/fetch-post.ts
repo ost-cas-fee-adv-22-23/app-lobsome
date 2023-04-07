@@ -1,6 +1,7 @@
 import { getRequest } from './request';
 import { ApiPost, Post } from '../types/post';
 import fetchUser from './fetch-user';
+import { decodeTime } from 'ulid';
 
 export default async (id: string, token: string): Promise<Post> => {
   try {
@@ -16,7 +17,11 @@ export default async (id: string, token: string): Promise<Post> => {
       config
     );
 
-    return { ...postResponse, creator: await fetchUser(postResponse.creator, token) };
+    return {
+      ...postResponse,
+      creator: await fetchUser(postResponse.creator, token),
+      createdAt: new Date(decodeTime(postResponse.id)).toISOString(),
+    };
   } catch (e: any) {
     throw new Error(`Parsing posts error - ${e.message}`);
   }
