@@ -7,9 +7,13 @@ import { decodeTime } from 'ulid';
 export interface PaginationParams {
   offset: number;
   limit: number;
+  creator?: string;
 }
 
-export default async (token: string, { offset = 0, limit = 10 }: PaginationParams): Promise<ResponseInterface<Post>> => {
+export default async (
+  token: string | undefined,
+  { offset = 0, limit = 10, creator }: PaginationParams
+): Promise<ResponseInterface<Post>> => {
   try {
     const config: RequestInit = {
       headers: {
@@ -20,7 +24,9 @@ export default async (token: string, { offset = 0, limit = 10 }: PaginationParam
     };
 
     const postsResponse = await getRequest<ResponseInterface<ApiPost>>(
-      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts?offset=${offset}&limit=${limit}`,
+      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts?${
+        creator ? `creator=${creator}&` : ''
+      }offset=${offset}&limit=${limit}`,
       config
     );
     const posts: Post[] = await Promise.all(
