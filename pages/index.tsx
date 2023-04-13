@@ -23,7 +23,7 @@ type PageProps = { posts: ResponseInterface<Post>; session: Session };
 export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
   const { data: session } = useSession();
   const mutation = useMutation({
-    mutationFn: (newPost: CreatePost) => createPost(session!.accessToken!, newPost),
+    mutationFn: (newPost: CreatePost) => createPost(session?.accessToken, newPost),
   });
 
   return (
@@ -45,14 +45,24 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
         </Card>
       </div>
 
-      <InfinitePostList posts={posts} />
+      <InfinitePostList posts={posts} queryKey={'posts'} />
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getServerSession(req, res, authOptions);
-  const posts = await fetchPosts(session!.accessToken!, { offset: 0, limit: 10 });
+  try {
+    const session = await getServerSession(req, res, authOptions);
+    const posts = await fetchPosts(session?.accessToken, { offset: 0, limit: 10 });
 
-  return { props: { posts, session } };
+    return { props: { posts, session } };
+  } catch (e) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+      props: {},
+    };
+  }
 };

@@ -19,6 +19,7 @@ import React, { ReactNode } from 'react';
 import { Post } from '../types/post';
 import Link from 'next/link';
 import { formatDistance } from 'date-fns';
+import { Like } from './like';
 
 type PostCardProps = {
   post: Post;
@@ -43,12 +44,14 @@ export const PostCard = ({ post, children }: PostCardProps) => {
   return (
     <Card key={post.id}>
       <div className="absolute -left-8 top-4">
-        <Avatar
-          alt="Portrait of Matilda"
-          showBorder
-          size={AvatarSize.M}
-          src={post.creator.avatarUrl || '/images/anonymous.png'}
-        />
+        <Link href={'/profile/' + post.creator.id}>
+          <Avatar
+            alt="Portrait of Matilda"
+            showBorder
+            size={AvatarSize.M}
+            src={post.creator.avatarUrl || '/images/anonymous.png'}
+          />
+        </Link>
       </div>
       <div className="mb-1">
         <Label size={LabelSizes.m}>
@@ -56,9 +59,11 @@ export const PostCard = ({ post, children }: PostCardProps) => {
         </Label>
       </div>
       <div className="flex space-x-5 mb-6">
-        <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
-          <SvgProfile />
-        </IconLink>
+        <Link href={'/profile/' + post.creator.id}>
+          <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
+            <SvgProfile />
+          </IconLink>
+        </Link>
         <Link href={'/mumble/' + post.id}>
           <IconLink color={IconLinkColors.SLATE} label={formatDistance(new Date(post.createdAt), Date.now())}>
             <SvgTime />
@@ -69,15 +74,16 @@ export const PostCard = ({ post, children }: PostCardProps) => {
         <Paragraph size={ParagraphSizes.m}>{wrapTags()}</Paragraph>
       </div>
       <div className="mb-6">
+        {/* eslint-disable-next-line react/forbid-component-props */}
         {post.mediaUrl && <Image src={post.mediaUrl} alt={post.id} width={600} height={600} className="rounded-2xl" />}
       </div>
       <div className="flex relative -left-3 space-x-8">
-        <InteractionButton label="Comments" type={ActionType.REPLY}>
-          {post.replyCount} Comments
-        </InteractionButton>
-        <InteractionButton label="Likes" type={ActionType.LIKE}>
-          {post.likeCount} Likes
-        </InteractionButton>
+        <Link href={'/mumble/' + post.id}>
+          <InteractionButton label="Comments" type={ActionType.REPLY}>
+            {post.replyCount} Comments
+          </InteractionButton>
+        </Link>
+        <Like count={post.likeCount} likedByUser={post.likedByUser} postId={post.id} />
         <InteractionButton label="Share" type={ActionType.SHARE}>
           Share
         </InteractionButton>

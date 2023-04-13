@@ -3,7 +3,7 @@ import { ApiPost, Post } from '../types/post';
 import fetchUser from './fetch-user';
 import { decodeTime } from 'ulid';
 
-export default async (id: string, token: string): Promise<Post> => {
+export default async (id: string, token: string | undefined): Promise<Post> => {
   try {
     const config: RequestInit = {
       headers: {

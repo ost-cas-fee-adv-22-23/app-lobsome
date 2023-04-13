@@ -51,7 +51,7 @@ export const ReplyCard = ({ reply }: ReplyCardProps) => {
         {/*<InteractionButton label="Comments" type={ActionType.REPLY}>*/}
         {/*  Comments*/}
         {/*</InteractionButton>*/}
-        <Like mode={'replies'} post={reply} />
+        <Like count={reply.likeCount} likedByUser={reply.likedByUser} postId={reply.id} />
         <InteractionButton label="Share" type={ActionType.SHARE}>
           Share
         </InteractionButton>

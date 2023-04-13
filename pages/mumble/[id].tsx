@@ -92,8 +92,8 @@ export default function MumblePage({ post, postReplies }: PageProps): InferGetSt
 export const getServerSideProps: GetServerSideProps = async ({ query: { id }, req, res }) => {
   const session = await getServerSession(req, res, authOptions);
 
-  const post = await fetchPost(id as string, session!.accessToken!);
-  const postReplies = await fetchReplies(id as string, session!.accessToken!);
+  const post = await fetchPost(id as string, session?.accessToken);
+  const postReplies = await fetchReplies(id as string, session?.accessToken);
 
   return { props: { post, postReplies, session } };
 };

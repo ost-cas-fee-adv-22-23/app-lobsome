@@ -1,8 +1,6 @@
 import { putRequest } from './request';
-import { Reply } from '../types/reply';
-import { Post } from '../types/post';
 
-export default async (token: string | undefined, post: Post | Reply): Promise<Post | Reply> => {
+export default async (token: string | undefined, postId: string): Promise<void> => {
   try {
     const config: RequestInit = {
       headers: {
@@ -12,12 +10,10 @@ export default async (token: string | undefined, post: Post | Reply): Promise<Po
     };
 
     await putRequest<unknown, unknown>(
-      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts/${post.id}/likes`,
+      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts/${postId}/likes`,
       {},
       config
     );
-
-    return post;
   } catch (e: any) {
     throw new Error(`Parsing posts error - ${e.message}`);
   }
