@@ -3,7 +3,7 @@ import fetchUser from './fetch-user';
 import { ApiReply, Reply } from '../types/reply';
 import { decodeTime } from 'ulid';
 
-export default async (id: string, token: string): Promise<Reply[]> => {
+export default async (id: string, token: string | undefined): Promise<Reply[]> => {
   try {
     const config: RequestInit = {
       headers: {

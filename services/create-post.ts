@@ -2,7 +2,7 @@ import { ApiPost, CreatePost, Post } from '../types/post';
 import { postRequest } from './request';
 import fetchUser from './fetch-user';
 
-export default async (token: string, newPost: CreatePost): Promise<Post> => {
+export default async (token: string | undefined, newPost: CreatePost): Promise<Post> => {
   try {
     const config: RequestInit = {
       headers: {
