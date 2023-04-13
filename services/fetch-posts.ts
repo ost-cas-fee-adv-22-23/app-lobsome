@@ -1,14 +1,42 @@
-import { PostInterface } from '../data/post.interface';
-import { mumbleApi } from './api-request';
+import { ApiPost, Post } from '../types/post';
+import { getRequest } from './request';
+import { ResponseInterface } from '../types/generic-response';
+import fetchUser from './fetch-user';
+import { decodeTime } from 'ulid';
 
-export interface PostsResponse {
-  count: number;
-  data: PostInterface[];
+export interface PaginationParams {
+  offset: number;
+  limit: number;
+  creator?: string;
 }
 
-export default async (): Promise<PostsResponse> => {
+export default async (
+  token: string | undefined,
+  { offset = 0, limit = 10, creator }: PaginationParams
+): Promise<ResponseInterface<Post>> => {
   try {
-    return mumbleApi.getWithoutAuth<PostsResponse>(`https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts`);
+    const config: RequestInit = {
+      headers: {
+        Accept: 'application/json',
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const postsResponse = await getRequest<ResponseInterface<ApiPost>>(
+      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts?${
+        creator ? `creator=${creator}&` : ''
+      }offset=${offset}&limit=${limit}`,
+      config
+    );
+    const posts: Post[] = await Promise.all(
+      postsResponse.data.map(async (item) => {
+        const user = await fetchUser(item.creator, token);
+        return { ...item, creator: user, createdAt: new Date(decodeTime(item.id)).toISOString() };
+      })
+    );
+
+    return { ...postsResponse, data: posts };
   } catch (e: any) {
     throw new Error(`Parsing posts error - ${e.message}`);
   }

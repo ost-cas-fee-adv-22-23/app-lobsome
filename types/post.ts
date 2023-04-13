@@ -1,6 +1,6 @@
-export interface PostInterface {
+export interface ApiPost {
   id: string;
-  creator: CreatorInterface;
+  creator: string;
   text: string;
   mediaUrl: string;
   mediaType: string;
@@ -8,6 +8,11 @@ export interface PostInterface {
   likedByUser: boolean;
   type: string;
   replyCount: number;
+  createdAt: string;
+}
+
+export interface Post extends Omit<ApiPost, 'creator'> {
+  creator: CreatorInterface;
 }
 
 export interface CreatorInterface {
@@ -18,7 +23,7 @@ export interface CreatorInterface {
   avatarUrl: string;
 }
 
-export interface ResponseInterface<T> {
-  data: T[];
-  count: number;
+export interface CreatePost {
+  text: string;
+  file: File | null;
 }

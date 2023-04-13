@@ -1,157 +1,99 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import {
-  ActionType,
   Avatar,
   AvatarSize,
-  Button,
-  ButtonColors,
-  Card,
   IconLink,
   IconLinkColors,
-  InteractionButton,
   Label,
   LabelSizes,
-  Link,
-  Paragraph,
-  ParagraphSizes,
   SvgProfile,
-  SvgSend,
-  SvgTime,
-  SvgUpload,
-  Textarea,
 } from '@smartive-education/design-system-component-library-lobsome';
+import fetchPost from '../../services/fetch-post';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import fetchReplies from '../../services/fetch-replies';
+import { useSession } from 'next-auth/react';
+import { Post } from '../../types/post';
+import { CreateReply, Reply } from '../../types/reply';
+import { getServerSession, Session } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { PostCard } from '../../components/post-card';
+import { WriteCard } from '../../components/write-card';
+import createReply from '../../services/create-reply';
+import { ReplyCard } from '../../components/reply-card';
+import { SkeletonCard } from '../../components/skeleton/skeleton-card';
 
-type Props = {
-  mumble: {
-    id: string;
-  };
-};
+type PageProps = { post: Post; postReplies: Reply[]; session: Session };
 
-export default function MumblePage({ mumble }: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
+export default function MumblePage({ post, postReplies }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
+  const { data: session } = useSession();
+  const queryClient = useQueryClient();
+
+  const { data: postData } = useQuery({
+    queryKey: ['post', post.id],
+    queryFn: async () => {
+      return await fetchPost(post.id, session!.accessToken!);
+    },
+    initialData: post,
+  });
+
+  const { data: replyData } = useQuery({
+    queryKey: ['replies', post.id],
+    queryFn: async () => {
+      return await fetchReplies(post.id, session!.accessToken!);
+    },
+    initialData: postReplies,
+  });
+
+  const mutation = useMutation({
+    mutationFn: (reply: CreateReply) => createReply(session!.accessToken!, reply, post.id),
+    onSuccess: () => {
+      return queryClient.invalidateQueries(['replies']);
+    },
+  });
+
   return (
-    <>
-      <h1>{mumble.id}</h1>
-
-      <div className="bg-slate-100 p-10 flex items-center justify-center ">
-        <div className="w-[680px]">
-          <Card>
-            {/* mumble */}
-            <div className="space-y-16">
+    <div className="py-8">
+      <PostCard post={postData}>
+        <div className="space-y-16 mt-16">
+          <div>
+            <div className="flex space-x-2">
+              <Avatar
+                alt="Portrait of Matilda"
+                size={AvatarSize.S}
+                src={session?.user.avatarUrl || '/images/anonymous.png'}
+              />
               <div>
-                <div className="absolute -left-8 top-4">
-                  <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src="https://i.pravatar.cc/" />
-                </div>
                 <div className="mb-1">
-                  <Label size={LabelSizes.xl}>Damian Caduff</Label>
+                  <Label size={LabelSizes.m}>
+                    {session?.user.firstname} {session?.user.lastname}
+                  </Label>
                 </div>
-                <div className="flex space-x-5 mb-6">
-                  <IconLink color={IconLinkColors.VIOLET} label="damiancaduff">
+                <div className=" space-x-5 mb-6">
+                  <IconLink color={IconLinkColors.VIOLET} label={session!.user.username}>
                     <SvgProfile />
                   </IconLink>
-                  <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
-                    <SvgTime />
-                  </IconLink>
-                </div>
-                <div className="mb-6">
-                  <Paragraph size={ParagraphSizes.m}>
-                    Ttincidunt vulputate in commodo. Sed vestibulum interdum sed neque.
-                  </Paragraph>
-                </div>
-                <div className="flex space-x-1 mb-8">
-                  <Link>#casfee</Link>
-                  <Link>#goOST</Link>
-                  <Link>#smartive</Link>
-                </div>
-                <div className="flex relative -left-3 space-x-8">
-                  <InteractionButton label="Comments" type={ActionType.REPLY}>
-                    Comments
-                  </InteractionButton>
-                  <InteractionButton label="Likes" type={ActionType.LIKE}>
-                    Likes
-                  </InteractionButton>
-                  <InteractionButton label="Share" type={ActionType.SHARE}>
-                    Share
-                  </InteractionButton>
-                </div>
-              </div>
-
-              {/* mumble your response */}
-              <div>
-                <div className="flex space-x-2">
-                  <Avatar alt="Portrait of Matilda" size={AvatarSize.S} src="https://i.pravatar.cc/" />
-                  <div>
-                    <div className="mb-1">
-                      <Label size={LabelSizes.m}>Damian Caduff</Label>
-                    </div>
-                    <div className=" space-x-5 mb-6">
-                      <IconLink color={IconLinkColors.VIOLET} label="damiancaduff">
-                        <SvgProfile />
-                      </IconLink>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mb-2">
-                  <Textarea placeholder="Und was meinst du dazu?" />
-                </div>
-                <div className="flex space-x-5">
-                  <Button color={ButtonColors.SLATE} fullWidth>
-                    Bild hochladen <SvgUpload />
-                  </Button>
-                  <Button color={ButtonColors.VIOLET} fullWidth>
-                    Absenden <SvgSend />
-                  </Button>
-                </div>
-              </div>
-
-              {/* mumble other responses */}
-              <div>
-                <div className="flex space-x-2">
-                  <Avatar alt="Portrait of Matilda" size={AvatarSize.S} src="https://i.pravatar.cc/" />
-                  <div>
-                    <div className="mb-1">
-                      <Label size={LabelSizes.m}>Damian Caduff</Label>
-                    </div>
-                    <div className="flex space-x-5 mb-6">
-                      <IconLink color={IconLinkColors.VIOLET} label="damiancaduff">
-                        <SvgProfile />
-                      </IconLink>
-                      <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
-                        <SvgTime />
-                      </IconLink>
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-6">
-                  <Paragraph size={ParagraphSizes.m}>
-                    Ttincidunt vulputate in commodo. Sed vestibulum interdum sed neque.
-                  </Paragraph>
-                </div>
-
-                <div className="flex relative -left-3 space-x-8">
-                  <InteractionButton label="Comments" type={ActionType.REPLY}>
-                    Comments
-                  </InteractionButton>
-                  <InteractionButton label="Likes" type={ActionType.LIKE}>
-                    Likes
-                  </InteractionButton>
-                  <InteractionButton label="Share" type={ActionType.SHARE}>
-                    Share
-                  </InteractionButton>
                 </div>
               </div>
             </div>
-          </Card>
+
+            <WriteCard onSend={mutation.mutate} />
+          </div>
+
+          {mutation.isLoading && <SkeletonCard />}
+          {replyData?.map((reply) => (
+            <ReplyCard key={reply.id} reply={reply} />
+          ))}
         </div>
-      </div>
-    </>
+      </PostCard>
+    </div>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { id } }) => {
-  return {
-    props: {
-      mumble: { id },
-    },
-  };
+export const getServerSideProps: GetServerSideProps = async ({ query: { id }, req, res }) => {
+  const session = await getServerSession(req, res, authOptions);
+
+  const post = await fetchPost(id as string, session?.accessToken);
+  const postReplies = await fetchReplies(id as string, session?.accessToken);
+
+  return { props: { post, postReplies, session } };
 };
