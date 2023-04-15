@@ -4,3 +4,15 @@ export interface ResponseInterface<T> {
   next?: string;
   previous?: string;
 }
+
+export interface SearchResponseInterface<T> extends Omit<ResponseInterface<T>, 'next' | 'previous'> {
+  next: {
+    offset: number;
+    limit: number;
+  };
+
+  previous: {
+    offset: number;
+    limit: number;
+  };
+}

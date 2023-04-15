@@ -76,7 +76,7 @@ export const Header = () => {
             <nav className="flex items-center">
               <ul className="flex gap-4 items-center">
                 <li className="p-2">
-                  <Link href="/my-profile">
+                  <Link href={'/my-profile'}>
                     <Avatar src={session?.user.avatarUrl || '/images/anonymous.png'} size={AvatarSize.S} />
                   </Link>
                 </li>
