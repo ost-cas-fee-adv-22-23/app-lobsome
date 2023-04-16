@@ -6,6 +6,7 @@ module.exports = {
   defaultLocale: 'en',
   pages: {
     '*': ['common'],
+    '/': ['index'],
   },
   staticsHoc: hoistNonReactStatics,
 };

@@ -18,10 +18,12 @@ import { ResponseInterface } from '../types/generic-response';
 import { getServerSession, Session } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import React from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 type PageProps = { posts: ResponseInterface<Post>; session: Session };
 
 export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
+  const { t } = useTranslation('index');
   const queryClient = useQueryClient();
   const { data: session } = useSession();
   const mutation = useMutation({
@@ -33,10 +35,10 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
     <>
       <div className="py-8">
         <Heading color={HeadingColors.VIOLET} tag={HeadingTags.HEADING2}>
-          Willkommen auf Mumble
+          {t('intro.title')}
         </Heading>
         <Heading color={HeadingColors.SLATE} tag={HeadingTags.HEADING4}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, exercitationem.
+          {t('intro.subtitle')}
         </Heading>
       </div>
 
@@ -51,7 +53,7 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
             />
           </div>
           <div className="mb-1">
-            <Heading tag={HeadingTags.HEADING4}>Hey, was gibt’s neues?</Heading>
+            <Heading tag={HeadingTags.HEADING4}> {t('write-card.title')}</Heading>
           </div>
           <WriteCard onSend={mutation.mutate} />
         </Card>
