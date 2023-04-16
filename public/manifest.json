@@ -4,8 +4,8 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "mumble",
-    "short_name": "mbl",
+    "name": "mumble - better than twitter",
+    "short_name": "mumble",
     "icons": [
         {
             "src": "/icon-192x192.png",
