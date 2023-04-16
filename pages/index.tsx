@@ -5,15 +5,11 @@ import {
   Heading,
   HeadingColors,
   HeadingTags,
-  Label,
-  LabelSizes,
-  Paragraph,
-  ParagraphSizes,
 } from '@smartive-education/design-system-component-library-lobsome';
 import { CreatePost, Post } from '../types/post';
 import { useSession } from 'next-auth/react';
 import { GetServerSideProps, InferGetStaticPropsType } from 'next';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import createPost from '../services/create-post';
 import { WriteCard } from '../components/write-card';
 import { InfinitePostList } from '../components/infinite-post-list';
@@ -26,9 +22,11 @@ import React from 'react';
 type PageProps = { posts: ResponseInterface<Post>; session: Session };
 
 export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
+  const queryClient = useQueryClient();
   const { data: session } = useSession();
   const mutation = useMutation({
     mutationFn: (newPost: CreatePost) => createPost(session?.accessToken, newPost),
+    onSuccess: () => queryClient.refetchQueries(['posts']),
   });
 
   return (
@@ -59,7 +57,7 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
         </Card>
       </div>
 
-      <InfinitePostList posts={posts} queryKey={'posts'} />
+      <InfinitePostList posts={posts} queryKey={'posts'} isAddingNewPost={mutation.isLoading} />
     </>
   );
 }
