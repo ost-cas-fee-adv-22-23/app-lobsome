@@ -3,11 +3,11 @@ import { Avatar, AvatarSize, SvgLogOut, SvgSettings } from '@smartive-education/
 import Link from 'next/link';
 import { Container } from './container';
 import { signOut, useSession } from 'next-auth/react';
-import { SettingsModal } from './modals/settings-modal';
+import { PremiumModal } from './modals/premium-modal';
 import useTranslation from 'next-translate/useTranslation';
 
 export const Header = () => {
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
   const { data: session } = useSession();
   const { t } = useTranslation('common');
 
@@ -82,7 +82,7 @@ export const Header = () => {
                 </li>
                 <li>
                   <a
-                    onClick={() => setShowSettingsModal(true)}
+                    onClick={() => setShowPremiumModal(true)}
                     className="flex flex-col items-center text-white transition group hover:bg-violet-700 p-2 rounded-lg"
                   >
                     <div className="group-hover:rotate-90 transition-all">
@@ -105,7 +105,7 @@ export const Header = () => {
           </div>
         </Container>
       </header>
-      {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)}></SettingsModal>}
+      {showPremiumModal && <PremiumModal onClose={() => setShowPremiumModal(false)}></PremiumModal>}
     </>
   );
 };

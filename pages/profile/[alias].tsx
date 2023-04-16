@@ -29,11 +29,14 @@ import fetchPosts from '../../services/fetch-posts';
 import { InfinitePostList } from '../../components/infinite-post-list';
 import { ResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
+import React, { useState } from 'react';
+import { PremiumModal } from '../../components/modals/premium-modal';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
 export default function ProfilePage({ user, posts }: PageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
   const { data } = useSession();
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const userQuery = useQuery({
     queryKey: ['user', user.id],
@@ -87,9 +90,14 @@ export default function ProfilePage({ user, posts }: PageProps): InferGetServerS
             </div>
             <div className="flex justify-end items-center space-x-5 mb-7">
               <Label size={LabelSizes.m} color={LabelColors.SLATE}>
-                Du folgst {userQuery.data.firstName} {userQuery.data.firstName}
+                Du folgst {userQuery.data.firstName} {userQuery.data.lastName} nicht.
               </Label>
-              <Button color={ButtonColors.SLATE} label="Unfollow" size={ButtonSizes.M}>
+              <Button
+                onClick={() => setShowPremiumModal(true)}
+                color={ButtonColors.SLATE}
+                label="Follow"
+                size={ButtonSizes.M}
+              >
                 <SvgCancel />
               </Button>
             </div>
@@ -100,6 +108,7 @@ export default function ProfilePage({ user, posts }: PageProps): InferGetServerS
           </div>
         </div>
       </div>
+      {showPremiumModal && <PremiumModal onClose={() => setShowPremiumModal(false)}></PremiumModal>}
     </div>
   );
 }
