@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { ReactElement } from 'react';
 import { SplitScreenLayout } from '../components/layout/split-screen-layout';
 import { useRouter } from 'next/router';
+import { Button, ButtonColors } from '@smartive-education/design-system-component-library-lobsome';
 
 function Login() {
   const { data: session } = useSession();
@@ -16,19 +17,22 @@ function Login() {
       </Head>
 
       <main>
-        {!!session && (
-          <a href="#" onClick={() => signOut()}>
-            <h2>Logout &rarr;</h2>
-            <p>Logout from your account</p>
-          </a>
-        )}
+        <div className="flex items-center justify-center h-screen">
+          {!session && (
+            <Button
+              onClick={() => signIn('zitadel', { callbackUrl: router.query.callbackUrl as string })}
+              color={ButtonColors.VIOLET}
+            >
+              Login with a ZITADEL account
+            </Button>
+          )}
 
-        {!session && (
-          <a href="#" onClick={() => signIn('zitadel', { callbackUrl: router.query.callbackUrl as string })}>
-            <h2>Login &rarr;</h2>
-            <p>Login with a ZITADEL account</p>
-          </a>
-        )}
+          {!!session && (
+            <Button onClick={() => signOut()} color={ButtonColors.SLATE}>
+              Logout
+            </Button>
+          )}
+        </div>
       </main>
     </>
   );
