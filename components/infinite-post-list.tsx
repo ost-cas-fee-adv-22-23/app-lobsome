@@ -10,9 +10,14 @@ import { Post } from '../types/post';
 import { PostCard } from './post-card';
 import { SkeletonCard } from './skeleton/skeleton-card';
 
-type InfinitePostListProps = { posts: ResponseInterface<Post>; queryKey: string; creator?: string };
+type InfinitePostListProps = {
+  posts: ResponseInterface<Post>;
+  queryKey: string;
+  creator?: string;
+  isAddingNewPost?: boolean;
+};
 
-export const InfinitePostList = ({ posts, queryKey, creator }: InfinitePostListProps) => {
+export const InfinitePostList = ({ posts, queryKey, creator, isAddingNewPost = false }: InfinitePostListProps) => {
   const { data: session } = useSession();
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery<ResponseInterface<Post>>({
     queryKey: [queryKey],
@@ -49,6 +54,11 @@ export const InfinitePostList = ({ posts, queryKey, creator }: InfinitePostListP
         }
       >
         <div className="space-y-4">
+          {isAddingNewPost && (
+            <Card>
+              <SkeletonCard />
+            </Card>
+          )}
           {data?.pages.map((group, i) => (
             <React.Fragment key={i}>
               {group.data.map((post) => (
