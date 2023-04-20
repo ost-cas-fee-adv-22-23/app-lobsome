@@ -25,7 +25,9 @@ export const InfiniteLikedPostList = ({ queryKey, likedBy }: InfiniteLikedPostLi
   });
 
   return status === 'loading' ? (
-    <p>Loading...</p>
+    <Card>
+      <SkeletonCard />
+    </Card>
   ) : status === 'error' ? (
     <p>Error: {(error as Error).message}</p>
   ) : (
