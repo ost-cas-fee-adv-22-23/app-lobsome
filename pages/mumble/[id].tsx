@@ -21,6 +21,7 @@ import { WriteCard } from '../../components/write-card';
 import createReply from '../../services/create-reply';
 import { ReplyCard } from '../../components/reply-card';
 import { SkeletonCard } from '../../components/skeleton/skeleton-card';
+import Link from 'next/link';
 
 type PageProps = { post: Post; postReplies: Reply[]; session: Session };
 
@@ -69,9 +70,11 @@ export default function MumblePage({ post, postReplies }: PageProps): InferGetSt
                   </Label>
                 </div>
                 <div className=" space-x-5 mb-6">
-                  <IconLink color={IconLinkColors.VIOLET} label={session!.user.username}>
-                    <SvgProfile />
-                  </IconLink>
+                  <Link href={'/my-profile'}>
+                    <IconLink color={IconLinkColors.VIOLET} label={session!.user.username}>
+                      <SvgProfile />
+                    </IconLink>
+                  </Link>
                 </div>
               </div>
             </div>

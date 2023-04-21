@@ -44,8 +44,8 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
 
   const userQuery = useQuery({
     queryKey: ['user', user.id],
-    queryFn: async () => {
-      return await fetchUser(user.id, data?.accessToken);
+    queryFn: () => {
+      return fetchUser(user.id, data?.accessToken);
     },
     initialData: user,
   });
