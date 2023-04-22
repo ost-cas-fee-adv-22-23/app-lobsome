@@ -16,6 +16,7 @@ import {
 import { Reply } from '../types/reply';
 import { Like } from './like';
 import { formatDistance } from 'date-fns';
+import Link from 'next/link';
 
 type ReplyCardProps = {
   reply: Reply;
@@ -28,14 +29,18 @@ export const ReplyCard = ({ reply }: ReplyCardProps) => {
         <Avatar alt="Portrait of Matilda" size={AvatarSize.S} src={reply.creator.avatarUrl || '/images/anonymous.png'} />
         <div>
           <div className="mb-1">
-            <Label size={LabelSizes.m}>
-              {reply.creator.firstName} {reply.creator.lastName}
-            </Label>
+            <Link href={'/profile/' + reply.creator.id}>
+              <Label size={LabelSizes.m}>
+                {reply.creator.firstName} {reply.creator.lastName}
+              </Label>
+            </Link>
           </div>
           <div className="flex space-x-5 mb-6">
-            <IconLink color={IconLinkColors.VIOLET} label={reply.creator.userName}>
-              <SvgProfile />
-            </IconLink>
+            <Link href={'/profile/' + reply.creator.id}>
+              <IconLink color={IconLinkColors.VIOLET} label={reply.creator.userName}>
+                <SvgProfile />
+              </IconLink>
+            </Link>
             <IconLink color={IconLinkColors.SLATE} label={formatDistance(new Date(reply.createdAt), Date.now())}>
               <SvgTime />
             </IconLink>
