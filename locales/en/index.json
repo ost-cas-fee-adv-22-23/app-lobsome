@@ -1,3 +1,9 @@
 {
-  "title": "Hello world in english"
+  "intro": {
+    "title": "Willkommen auf Mumble",
+    "subtitle": "Connect with people worldwide through short messages. Stay updated, share your thoughts, and join in on the conversations that matter to you. "
+  },
+  "write-card": {
+    "title": "What are your thoughts?"
+  }
 }

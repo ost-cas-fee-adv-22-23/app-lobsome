@@ -31,3 +31,8 @@ export async function putRequest<T, U>(path: string, body: T, config?: RequestIn
   const init = { method: 'put', body: JSON.stringify(body), ...config };
   return await http<U>(path, init);
 }
+
+export async function deleteRequest<T>(path: string, config?: RequestInit): Promise<T> {
+  const init = { method: 'delete', ...config };
+  return await http<T>(path, init);
+}

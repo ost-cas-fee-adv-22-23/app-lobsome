@@ -8,28 +8,32 @@ import {
   InteractionButton,
   Label,
   LabelSizes,
-  Link,
+  Link as MumbleLink,
   Paragraph,
   ParagraphSizes,
   SvgProfile,
   SvgTime,
 } from '@smartive-education/design-system-component-library-lobsome';
 import Image from 'next/image';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Post } from '../types/post';
+import Link from 'next/link';
+import { formatDistance } from 'date-fns';
+import { Like } from './like';
 
 type PostCardProps = {
   post: Post;
+  children?: ReactNode;
 };
 
-export const PostCard = ({ post }: PostCardProps) => {
+export const PostCard = ({ post, children }: PostCardProps) => {
   const wrapTags = () => {
     const textArray = post.text.split(' ');
     return textArray.map((str, index) => {
       if (str.startsWith('#')) {
         return (
           <React.Fragment key={index}>
-            <Link hasUnderline>{str}</Link>&nbsp;
+            <MumbleLink hasUnderline>{str}</MumbleLink>&nbsp;
           </React.Fragment>
         );
       }
@@ -40,12 +44,14 @@ export const PostCard = ({ post }: PostCardProps) => {
   return (
     <Card key={post.id}>
       <div className="absolute -left-8 top-4">
-        <Avatar
-          alt="Portrait of Matilda"
-          showBorder
-          size={AvatarSize.M}
-          src={post.creator.avatarUrl || '/images/anonymous.png'}
-        />
+        <Link href={'/profile/' + post.creator.id}>
+          <Avatar
+            alt="Portrait of Matilda"
+            showBorder
+            size={AvatarSize.M}
+            src={post.creator.avatarUrl || '/images/anonymous.png'}
+          />
+        </Link>
       </div>
       <div className="mb-1">
         <Label size={LabelSizes.m}>
@@ -53,30 +59,37 @@ export const PostCard = ({ post }: PostCardProps) => {
         </Label>
       </div>
       <div className="flex space-x-5 mb-6">
-        <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
-          <SvgProfile />
-        </IconLink>
-        <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
-          <SvgTime />
-        </IconLink>
+        <Link href={'/profile/' + post.creator.id}>
+          <IconLink color={IconLinkColors.VIOLET} label={post.creator.userName}>
+            <SvgProfile />
+          </IconLink>
+        </Link>
+        <Link href={'/mumble/' + post.id}>
+          <IconLink color={IconLinkColors.SLATE} label={formatDistance(new Date(post.createdAt), Date.now())}>
+            <SvgTime />
+          </IconLink>
+        </Link>
       </div>
       <div className="mb-6">
         <Paragraph size={ParagraphSizes.m}>{wrapTags()}</Paragraph>
       </div>
       <div className="mb-6">
+        {/* eslint-disable-next-line react/forbid-component-props */}
         {post.mediaUrl && <Image src={post.mediaUrl} alt={post.id} width={600} height={600} className="rounded-2xl" />}
       </div>
       <div className="flex relative -left-3 space-x-8">
-        <InteractionButton label="Comments" type={ActionType.REPLY}>
-          {post.replyCount} Comments
-        </InteractionButton>
-        <InteractionButton label="Likes" type={ActionType.LIKE}>
-          {post.likeCount} Likes
-        </InteractionButton>
+        <Link href={'/mumble/' + post.id}>
+          <InteractionButton label="Comments" type={ActionType.REPLY}>
+            {post.replyCount} Comments
+          </InteractionButton>
+        </Link>
+        <Like count={post.likeCount} likedByUser={post.likedByUser} postId={post.id} />
         <InteractionButton label="Share" type={ActionType.SHARE}>
           Share
         </InteractionButton>
       </div>
+
+      {children}
     </Card>
   );
 };

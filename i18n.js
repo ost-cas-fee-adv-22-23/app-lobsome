@@ -6,6 +6,8 @@ module.exports = {
   defaultLocale: 'en',
   pages: {
     '*': ['common'],
+    '/login': ['login'],
+    '/': ['index'],
   },
   staticsHoc: hoistNonReactStatics,
 };

@@ -1,19 +1,20 @@
 import { ApiPost, Post } from '../types/post';
-import { getRequest } from './request';
-import { ResponseInterface } from '../types/generic-response';
+import { postRequest } from './request';
+import { SearchResponseInterface } from '../types/generic-response';
 import fetchUser from './fetch-user';
 import { decodeTime } from 'ulid';
 
-export interface PaginationParams {
+export interface SearchBodyParams {
+  text?: string;
+  tags?: string[];
+  likedBy?: string[];
+  mentions?: string[];
+  isReply?: boolean;
   offset: number;
   limit: number;
-  creator?: string;
 }
 
-export default async (
-  token: string | undefined,
-  { offset = 0, limit = 10, creator }: PaginationParams
-): Promise<ResponseInterface<Post>> => {
+export default async (token: string | undefined, searchBody: SearchBodyParams): Promise<SearchResponseInterface<Post>> => {
   try {
     const config: RequestInit = {
       headers: {
@@ -23,10 +24,9 @@ export default async (
       },
     };
 
-    const postsResponse = await getRequest<ResponseInterface<ApiPost>>(
-      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts?${
-        creator ? `creator=${creator}&` : ''
-      }offset=${offset}&limit=${limit}`,
+    const postsResponse = await postRequest<SearchBodyParams, SearchResponseInterface<ApiPost>>(
+      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts/search`,
+      searchBody,
       config
     );
     const posts: Post[] = await Promise.all(
