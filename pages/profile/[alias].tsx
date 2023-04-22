@@ -29,14 +29,14 @@ import fetchPosts from '../../services/fetch-posts';
 import { InfinitePostList } from '../../components/infinite-post-list';
 import { ResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
-import React, { useState } from 'react';
-import { PremiumModal } from '../../components/modals/premium-modal';
+import React, { useContext } from 'react';
+import { premiumModalContext } from '../../providers/premium-modal.provider';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
 export default function ProfilePage({ user, posts }: PageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
   const { data } = useSession();
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
 
   const userQuery = useQuery({
     queryKey: ['user', user.id],
@@ -93,7 +93,7 @@ export default function ProfilePage({ user, posts }: PageProps): InferGetServerS
                 Du folgst {userQuery.data.firstName} {userQuery.data.lastName} nicht.
               </Label>
               <Button
-                onClick={() => setShowPremiumModal(true)}
+                onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
                 color={ButtonColors.SLATE}
                 label="Follow"
                 size={ButtonSizes.M}
@@ -108,7 +108,6 @@ export default function ProfilePage({ user, posts }: PageProps): InferGetServerS
           </div>
         </div>
       </div>
-      {showPremiumModal && <PremiumModal onClose={() => setShowPremiumModal(false)}></PremiumModal>}
     </div>
   );
 }

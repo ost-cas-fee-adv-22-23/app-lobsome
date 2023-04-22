@@ -1,6 +1,6 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useContext, useState } from 'react';
 import { SplitScreenLayout } from '../components/layout/split-screen-layout';
 import { useRouter } from 'next/router';
 import {
@@ -17,13 +17,14 @@ import {
   SvgMumble,
 } from '@smartive-education/design-system-component-library-lobsome';
 import useTranslation from 'next-translate/useTranslation';
+import { premiumModalContext } from '../providers/premium-modal.provider';
 
 function Login() {
   const { data: session } = useSession();
   const router = useRouter();
   const { t } = useTranslation('login');
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
   return (
     <>
       <Head>
@@ -56,9 +57,8 @@ function Login() {
                   </div>
                   <div className="justify-center">
                     <Label size={LabelSizes.s}>{t('login:label-register')}</Label>
-                    <Link href={'/register'} hasUnderline={true}>
+                    <Link onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)} hasUnderline={true}>
                       <br />
-                      {/* TODO add premium modal for this link */}
                       {t('login:link-register')}
                     </Link>
                   </div>

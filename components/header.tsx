@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Avatar, AvatarSize, SvgLogOut, SvgSettings } from '@smartive-education/design-system-component-library-lobsome';
 import Link from 'next/link';
 import { Container } from './container';
 import { signOut, useSession } from 'next-auth/react';
-import { PremiumModal } from './modals/premium-modal';
 import useTranslation from 'next-translate/useTranslation';
+import { premiumModalContext } from '../providers/premium-modal.provider';
 
 export const Header = () => {
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
   const { data: session } = useSession();
   const { t } = useTranslation('common');
 
@@ -82,7 +82,7 @@ export const Header = () => {
                 </li>
                 <li>
                   <a
-                    onClick={() => setShowPremiumModal(true)}
+                    onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
                     className="flex flex-col items-center text-white transition group hover:bg-violet-700 p-2 rounded-lg"
                   >
                     <div className="group-hover:rotate-90 transition-all">
@@ -105,7 +105,6 @@ export const Header = () => {
           </div>
         </Container>
       </header>
-      {showPremiumModal && <PremiumModal onClose={() => setShowPremiumModal(false)}></PremiumModal>}
     </>
   );
 };

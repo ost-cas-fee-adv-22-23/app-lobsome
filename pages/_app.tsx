@@ -7,6 +7,7 @@ import { Layout } from '../components/layout/layout';
 import { QueryClient } from '@tanstack/query-core';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { User } from '../types/user';
+import PremiumModalProvider from '../providers/premium-modal.provider';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -23,9 +24,12 @@ export const cachedUsers: Record<string, User> = {};
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
+
   return (
     <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>{getLayout(<Component {...pageProps} />)}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <PremiumModalProvider>{getLayout(<Component {...pageProps} />)}</PremiumModalProvider>
+      </QueryClientProvider>
     </SessionProvider>
   );
 }
