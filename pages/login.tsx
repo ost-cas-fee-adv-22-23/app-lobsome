@@ -1,6 +1,6 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { SplitScreenLayout } from '../components/layout/split-screen-layout';
 import { useRouter } from 'next/router';
 import {
@@ -22,6 +22,7 @@ function Login() {
   const { data: session } = useSession();
   const router = useRouter();
   const { t } = useTranslation('login');
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
@@ -38,8 +39,8 @@ function Login() {
                 <>
                   <Heading color={HeadingColors.SLATE}>{t('login:title')}</Heading>
                   <Input label={t('login:label-email')}></Input>
-                  <Input label={t('login:label-password')}>
-                    <SvgEye />
+                  <Input label={t('login:label-password')} type={showPassword ? 'text' : 'password'}>
+                    <SvgEye onClick={() => setShowPassword(!showPassword)} />
                   </Input>
                   <div className="space-y-3 pt-6">
                     {/* TODO add premium modal for this link */}
