@@ -32,7 +32,7 @@ export default function MumblePage({ post, postReplies }: PageProps): InferGetSt
   const { data: postData } = useQuery({
     queryKey: ['post', post.id],
     queryFn: async () => {
-      return await fetchPost(post.id, session!.accessToken!);
+      return await fetchPost(post.id, session?.accessToken);
     },
     initialData: post,
   });
@@ -40,13 +40,13 @@ export default function MumblePage({ post, postReplies }: PageProps): InferGetSt
   const { data: replyData } = useQuery({
     queryKey: ['replies', post.id],
     queryFn: async () => {
-      return await fetchReplies(post.id, session!.accessToken!);
+      return await fetchReplies(post.id, session?.accessToken);
     },
     initialData: postReplies,
   });
 
   const mutation = useMutation({
-    mutationFn: (reply: CreateReply) => createReply(session!.accessToken!, reply, post.id),
+    mutationFn: (reply: CreateReply) => createReply(session?.accessToken, reply, post.id),
     onSuccess: () => {
       return queryClient.invalidateQueries(['replies']);
     },
@@ -71,7 +71,7 @@ export default function MumblePage({ post, postReplies }: PageProps): InferGetSt
                 </div>
                 <div className=" space-x-5 mb-6">
                   <Link href={'/my-profile'}>
-                    <IconLink color={IconLinkColors.VIOLET} label={session!.user.username}>
+                    <IconLink color={IconLinkColors.VIOLET} label={session?.user.username || 'anonymous'}>
                       <SvgProfile />
                     </IconLink>
                   </Link>
@@ -93,10 +93,20 @@ export default function MumblePage({ post, postReplies }: PageProps): InferGetSt
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query: { id }, req, res }) => {
-  const session = await getServerSession(req, res, authOptions);
+  try {
+    const session = await getServerSession(req, res, authOptions);
 
-  const post = await fetchPost(id as string, session?.accessToken);
-  const postReplies = await fetchReplies(id as string, session?.accessToken);
+    const post = await fetchPost(id as string, session?.accessToken);
+    const postReplies = await fetchReplies(id as string, session?.accessToken);
 
-  return { props: { post, postReplies, session } };
+    return { props: { post, postReplies, session } };
+  } catch (e) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+      props: {},
+    };
+  }
 };

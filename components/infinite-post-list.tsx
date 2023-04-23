@@ -65,8 +65,8 @@ export const InfinitePostList = ({
     getNextPageParam: (lastPage) => {
       if (mode === InfinitePostListMode.DEFAULT) {
         if (lastPage.next) {
-          const urlParams = new URLSearchParams((lastPage.next as string).split('?')[1]);
-          return urlParams.get('offset') ? parseInt(urlParams.get('offset')!) : 0;
+          const offset = new URLSearchParams((lastPage.next as string).split('?')[1]).get('offset');
+          return offset ? parseInt(offset) : 0;
         }
         return undefined;
       }
