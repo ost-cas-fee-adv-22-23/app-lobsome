@@ -8,6 +8,7 @@ module.exports = {
     '*': ['common'],
     '/login': ['login'],
     '/': ['index'],
+    '/search-tag/[term]': ['search-tag'],
   },
   staticsHoc: hoistNonReactStatics,
 };
