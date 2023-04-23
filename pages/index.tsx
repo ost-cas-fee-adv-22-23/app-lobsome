@@ -12,7 +12,7 @@ import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import createPost from '../services/create-post';
 import { WriteCard } from '../components/write-card';
-import { InfinitePostList } from '../components/infinite-post-list';
+import { InfinitePostList, InfinitePostListMode } from '../components/infinite-post-list';
 import fetchPosts from '../services/fetch-posts';
 import { ResponseInterface } from '../types/generic-response';
 import { getServerSession, Session } from 'next-auth';
@@ -59,7 +59,12 @@ export default function PageHome({ posts }: PageProps): InferGetStaticPropsType<
         </Card>
       </div>
 
-      <InfinitePostList posts={posts} queryKey={'posts'} isAddingNewPost={mutation.isLoading} />
+      <InfinitePostList
+        posts={posts}
+        queryKey={'posts'}
+        isAddingNewPost={mutation.isLoading}
+        mode={InfinitePostListMode.DEFAULT}
+      />
     </>
   );
 }

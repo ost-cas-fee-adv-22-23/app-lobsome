@@ -25,11 +25,10 @@ import { ResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
 import { getServerSession, Session } from 'next-auth';
 import fetchUser from '../../services/fetch-user';
-import { InfinitePostList } from '../../components/infinite-post-list';
+import { InfinitePostList, InfinitePostListMode } from '../../components/infinite-post-list';
 import { authOptions } from '../api/auth/[...nextauth]';
 import fetchPosts from '../../services/fetch-posts';
 import { useState } from 'react';
-import { InfiniteLikedPostList } from '../../components/infinite-liked-post-list';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
@@ -114,11 +113,11 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
 
           {activeTab === TabEnum.MUMBLES ? (
             <div className="mt-8 space-y-4">
-              <InfinitePostList posts={posts} queryKey={'userPosts'} creator={user.id} />
+              <InfinitePostList posts={posts} queryKey={'userPosts'} creator={user.id} mode={InfinitePostListMode.DEFAULT} />
             </div>
           ) : (
             <div className="mt-8 space-y-4">
-              <InfiniteLikedPostList queryKey={'userLikedPosts'} likedBy={user.id} />
+              <InfinitePostList queryKey={'userLikedPosts'} likedBy={user.id} mode={InfinitePostListMode.LIKES} />
             </div>
           )}
         </div>
