@@ -18,7 +18,7 @@ export enum InfinitePostListMode {
 }
 
 type InfinitePostListProps = {
-  posts?: ResponseInterface<Post>;
+  posts?: ResponseInterface<Post> | SearchResponseInterface<Post>;
   mode: InfinitePostListMode;
   queryKey: string;
   creator?: string;

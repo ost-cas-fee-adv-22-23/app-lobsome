@@ -33,7 +33,10 @@ export const PostCard = ({ post, children }: PostCardProps) => {
       if (str.startsWith('#')) {
         return (
           <React.Fragment key={index}>
-            <MumbleLink hasUnderline>{str}</MumbleLink>&nbsp;
+            <MumbleLink href={'/search-tag/' + str.replace('#', '')} hasUnderline>
+              {str}
+            </MumbleLink>
+            &nbsp;
           </React.Fragment>
         );
       }

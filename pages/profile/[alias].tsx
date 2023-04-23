@@ -26,7 +26,7 @@ import {
 import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]';
 import fetchPosts from '../../services/fetch-posts';
-import { InfinitePostList } from '../../components/infinite-post-list';
+import { InfinitePostList, InfinitePostListMode } from '../../components/infinite-post-list';
 import { ResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
 import React, { useContext } from 'react';
@@ -104,7 +104,7 @@ export default function ProfilePage({ user, posts }: PageProps): InferGetServerS
           </div>
 
           <div className="mt-8 space-y-4">
-            <InfinitePostList posts={posts} queryKey={'userPosts'} creator={user.id} />
+            <InfinitePostList posts={posts} queryKey={'userPosts'} creator={user.id} mode={InfinitePostListMode.DEFAULT} />
           </div>
         </div>
       </div>
