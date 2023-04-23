@@ -67,9 +67,14 @@ function Login() {
               {!!session && (
                 <div className="space-y-6">
                   <Heading tag={HeadingTags.HEADING3}> {t('login:text-leaving')}</Heading>
-                  <Button onClick={() => signOut()} color={ButtonColors.SLATE}>
-                    {t('login:label-logout')}
-                  </Button>
+                  <div className="flex space-x-2">
+                    <Link href={'/'}>
+                      <Button color={ButtonColors.GRADIENT}>{t('login:back-to-home')}</Button>
+                    </Link>
+                    <Button onClick={() => signOut()} color={ButtonColors.SLATE}>
+                      {t('login:label-logout')}
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
