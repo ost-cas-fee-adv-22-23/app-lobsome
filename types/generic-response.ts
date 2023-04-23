@@ -6,13 +6,11 @@ export interface ResponseInterface<T> {
 }
 
 export interface SearchResponseInterface<T> extends Omit<ResponseInterface<T>, 'next' | 'previous'> {
-  next: {
-    offset: number;
-    limit: number;
-  };
+  next: SearchPaginationParams;
+  previous: SearchPaginationParams;
+}
 
-  previous: {
-    offset: number;
-    limit: number;
-  };
+export interface SearchPaginationParams {
+  offset: number;
+  limit: number;
 }
