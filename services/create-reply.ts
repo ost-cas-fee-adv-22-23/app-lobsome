@@ -1,5 +1,5 @@
 import { ApiPost, CreatePost, Post } from '../types/post';
-import { postRequest } from './request';
+import { postFormDataRequest } from './request';
 import fetchUser from './fetch-user';
 
 export default async (token: string | undefined, reply: CreatePost, postId: string): Promise<Post> => {
@@ -18,7 +18,7 @@ export default async (token: string | undefined, reply: CreatePost, postId: stri
       formData.append('image', reply.file);
     }
 
-    const postResponse = await postRequest<FormData, ApiPost>(
+    const postResponse = await postFormDataRequest<ApiPost>(
       `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts/${postId}`,
       formData,
       config
