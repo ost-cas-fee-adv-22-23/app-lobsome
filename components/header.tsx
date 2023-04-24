@@ -13,7 +13,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="w-full left-0 top-0 bg-violet-600 h-20 ">
+      <header className="w-full left-0 top-0 bg-violet-600 h-20 fixed z-50">
         <Container>
           <div className="flex justify-between w-full items-center h-full mx-3">
             <Link href="/">
