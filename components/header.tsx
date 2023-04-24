@@ -83,7 +83,7 @@ export const Header = () => {
                 <li>
                   <a
                     onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
-                    className="flex flex-col items-center text-white transition group hover:bg-violet-700 p-2 rounded-lg"
+                    className="flex flex-col items-center text-white transition group hover:bg-violet-700 p-2 rounded-lg cursor-pointer"
                   >
                     <div className="group-hover:rotate-90 transition-all">
                       <SvgSettings />
@@ -94,7 +94,7 @@ export const Header = () => {
                 <li>
                   <a
                     onClick={() => signOut()}
-                    className="flex flex-col items-center text-white transition hover:bg-violet-700 p-2 rounded-lg"
+                    className="flex flex-col items-center text-white transition hover:bg-violet-700 p-2 rounded-lg cursor-pointer"
                   >
                     <SvgLogOut />
                     {t('header.logout')}

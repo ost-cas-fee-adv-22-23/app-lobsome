@@ -16,10 +16,14 @@ export interface SettingsModalProps {
 export const PremiumModal = ({ onClose }: SettingsModalProps) => {
   const { t } = useTranslation('common');
 
+  function save() {
+    alert('haha, you fool!');
+  }
+
   return (
-    <div className="w-64 fixed inset-0 overflow-y-auto z-10">
-      <ModalContainer title={t('premium-modal.modal-title')} onCancel={() => onClose()}>
-        <div className={'space-y-6'}>
+    <div className="fixed inset-0 overflow-y-auto z-10">
+      <ModalContainer title={t('premium-modal.modal-title')} onSave={save} onCancel={() => onClose()}>
+        <div className="space-y-6">
           <Label color={LabelColors.VIOLET} size={LabelSizes.xl}>
             {t('premium-modal.modal-subtitle')}
           </Label>
