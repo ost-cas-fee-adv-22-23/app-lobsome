@@ -23,7 +23,6 @@ You can find the deployed and ready to use app here:
 
 <br>
 
-<hr>
 
 
 ## ✈️ Getting Started
@@ -71,7 +70,6 @@ url: http://localhost:3000
 
 
 
-<hr>
 
 ## 🔒 Authentication
 
@@ -82,7 +80,6 @@ After successful registration you should be able to login via http://localhost:3
 
 
 <br>
-<hr>
 
 
 ## 🛠️ Libraries and Tools
@@ -117,7 +114,6 @@ your web applications a breeze.
 
 <br>
 
-<hr>
 
 ## 👨🏻‍💻  Authors
 
