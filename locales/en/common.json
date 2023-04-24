@@ -25,12 +25,15 @@
     "modal-benefits": "What are the benefits of mumble premium?"
   },
   "post-card": {
+    "comments": "Comments",
     "comments_0": "No comments",
     "comments_one": "Comment",
     "comments_other": "Comments",
+    "comments_many": "Comments",
     "likes_0": "No likes",
     "likes_one": "Like",
     "likes_other": "Likes",
+    "likes_many": "Likes",
     "share": "Share"
   }
 }
