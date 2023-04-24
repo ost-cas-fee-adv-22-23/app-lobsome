@@ -15,8 +15,16 @@ as well as developed important skills that will serve us well in future academic
 We look forward to sharing our findings and experiences with our classmates and instructors, 
 and to learning from their projects as well. Thanks for checking out our Project!
 
+<br>
+You can find the deployed and ready to use app here:
+
+### [https://app-lobsome.vercel.app/](https://app-lobsome.vercel.app/)
+
 
 <br>
+
+<hr>
+
 
 ## ✈️ Getting Started
 
@@ -58,6 +66,23 @@ npm run lint - Runs next lint to set up Next.js' built-in ESLint configuration
 
 <br>
 
+After successful build and start you should be able to access the app on your browser at: <br> <br>
+url: http://localhost:3000
+
+
+
+<hr>
+
+## 🔒 Authentication
+
+To access the content of mumble you need to setup an account at [Zitadel](https://cas-fee-advanced-ocvdad.zitadel.cloud/ui/login/loginname). 
+
+After successful registration you should be able to login via http://localhost:3000/login.
+
+
+
+<br>
+<hr>
 
 
 ## 🛠️ Libraries and Tools
@@ -92,17 +117,12 @@ your web applications a breeze.
 
 <br>
 
+<hr>
+
 ## 👨🏻‍💻  Authors
 
 * **Alexander Widmer** - [Github](https://github.com/ejthan)
 * **Milos Djuric** - [Github](https://github.com/djurango)
 
 
-<br>
-
-
-## 💡 Acknowledgments
-
-* Less dependencies make less problems
-* Keep it simple, stupid. Do not pollute your design system with unnecessary, fancy stuff (you will regret it) 
-
+<br><br>
