@@ -44,8 +44,12 @@ function Login() {
                     <SvgEye onClick={() => setShowPassword(!showPassword)} />
                   </Input>
                   <div className="space-y-3 pt-6">
-                    {/* TODO add premium modal for this link */}
-                    <Button fullWidth={true} label={t('login:label-login')} color={ButtonColors.VIOLET}>
+                    <Button
+                      onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
+                      fullWidth={true}
+                      label={t('login:label-login')}
+                      color={ButtonColors.VIOLET}
+                    >
                       <SvgMumble />
                     </Button>
                     <Button
