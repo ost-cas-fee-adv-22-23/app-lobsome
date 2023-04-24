@@ -6,9 +6,11 @@ module.exports = {
   defaultLocale: 'en',
   pages: {
     '*': ['common'],
-    '/login': ['login'],
     '/': ['index'],
+    '/login': ['login'],
     '/search-tag/[term]': ['search-tag'],
+    '/my-profile': ['myprofile'],
+    '/profile/[alias]': ['profile'],
   },
   staticsHoc: hoistNonReactStatics,
 };

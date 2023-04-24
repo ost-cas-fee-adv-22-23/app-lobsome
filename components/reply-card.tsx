@@ -17,12 +17,15 @@ import { Reply } from '../types/reply';
 import { Like } from './like';
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
+import useTranslation from 'next-translate/useTranslation';
 
 type ReplyCardProps = {
   reply: Reply;
 };
 
 export const ReplyCard = ({ reply }: ReplyCardProps) => {
+  const { t } = useTranslation('common');
+
   return (
     <div>
       <div className="flex space-x-2">
@@ -56,9 +59,9 @@ export const ReplyCard = ({ reply }: ReplyCardProps) => {
         {/*<InteractionButton label="Comments" type={ActionType.REPLY}>*/}
         {/*  Comments*/}
         {/*</InteractionButton>*/}
-        <Like count={reply.likeCount} likedByUser={reply.likedByUser} postId={reply.id} />
-        <InteractionButton label="Share" type={ActionType.SHARE}>
-          Share
+        <Like countLike={reply.likeCount} likedByUser={reply.likedByUser} postId={reply.id} />
+        <InteractionButton label={t('premium-modal.modal-title')} type={ActionType.SHARE}>
+          {t('post-card.share')}
         </InteractionButton>
       </div>
     </div>

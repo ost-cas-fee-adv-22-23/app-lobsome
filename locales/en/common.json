@@ -14,9 +14,23 @@
     }
   },
   "write-card": {
-    "placeholder": "And what do you think about that?",
-    "upload-image": "upload image",
-    "submit": "submit"
-
+    "placeholder": "Write something!",
+    "upload-image": "Upload image",
+    "submit": "Submit"
+  },
+  "premium-modal": {
+    "modal-title": "Go Preimum",
+    "modal-subtitle": "Discover the wonderful world of Mumble Premium!",
+    "modal-text": "Upgrade to our premium subscription for exclusive access to advanced features and benefits that will enhance your user experience. Unlock the full potential of mumble with premium today!",
+    "modal-benefits": "What are the benefits of mumble premium?"
+  },
+  "post-card": {
+    "comments_0": "No comments",
+    "comments_one": "Comment",
+    "comments_other": "Comments",
+    "likes_0": "No likes",
+    "likes_one": "Like",
+    "likes_other": "Likes",
+    "share": "Share"
   }
 }
