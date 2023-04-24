@@ -1,6 +1,7 @@
 import { getRequest } from './request';
+import { User } from '../types/user';
 
-export default async (token: string) => {
+export default async (token: string): Promise<User[]> => {
   try {
     const config: RequestInit = {
       headers: {

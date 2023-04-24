@@ -2,7 +2,7 @@ import { ApiPost, CreatePost, Post } from '../types/post';
 import { postFormDataRequest } from './request';
 import fetchUser from './fetch-user';
 
-export default async (token: string | undefined, newPost: CreatePost): Promise<Post> => {
+export default async (token: string | undefined, reply: CreatePost, postId: string): Promise<Post> => {
   try {
     const config: RequestInit = {
       headers: {
@@ -12,14 +12,14 @@ export default async (token: string | undefined, newPost: CreatePost): Promise<P
     };
 
     const formData = new FormData();
-    formData.append('text', newPost.text);
+    formData.append('text', reply.text);
 
-    if (newPost.file) {
-      formData.append('image', newPost.file);
+    if (reply.file) {
+      formData.append('image', reply.file);
     }
 
     const postResponse = await postFormDataRequest<ApiPost>(
-      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts`,
+      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts/${postId}`,
       formData,
       config
     );

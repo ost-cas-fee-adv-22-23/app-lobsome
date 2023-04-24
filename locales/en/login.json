@@ -1,0 +1,12 @@
+{
+  "title": "Login",
+  "label-password": "Password",
+  "label-email": "Mail",
+  "label-login": "Login",
+  "label-login-zidatel": "Login with Zitadel",
+  "label-register": "Not registered?",
+  "link-register": "Sign up now",
+  "label-logout": "Logout",
+  "text-leaving": "Are you already leaving? :-(",
+  "back-to-home": "Go back to the homepage"
+}

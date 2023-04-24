@@ -8,6 +8,7 @@ export interface ApiPost {
   likedByUser: boolean;
   type: string;
   replyCount: number;
+  createdAt: string;
 }
 
 export interface Post extends Omit<ApiPost, 'creator'> {

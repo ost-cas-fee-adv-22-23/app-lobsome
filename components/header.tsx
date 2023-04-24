@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Avatar, AvatarSize, SvgLogOut, SvgSettings } from '@smartive-education/design-system-component-library-lobsome';
 import Link from 'next/link';
 import { Container } from './container';
 import { signOut, useSession } from 'next-auth/react';
-import { SettingsModal } from './modals/settings-modal';
 import useTranslation from 'next-translate/useTranslation';
+import { premiumModalContext } from '../providers/premium-modal.provider';
 
 export const Header = () => {
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
   const { data: session } = useSession();
   const { t } = useTranslation('common');
 
   return (
     <>
-      <header className="w-full left-0 top-0 bg-violet-600 h-20 ">
+      <header className="w-full left-0 top-0 bg-violet-600 h-20 fixed z-50">
         <Container>
           <div className="flex justify-between w-full items-center h-full mx-3">
             <Link href="/">
@@ -76,14 +76,14 @@ export const Header = () => {
             <nav className="flex items-center">
               <ul className="flex gap-4 items-center">
                 <li className="p-2">
-                  <Link href="/my-profile">
+                  <Link href={'/my-profile'}>
                     <Avatar src={session?.user.avatarUrl || '/images/anonymous.png'} size={AvatarSize.S} />
                   </Link>
                 </li>
                 <li>
                   <a
-                    onClick={() => setShowSettingsModal(true)}
-                    className="flex flex-col items-center text-white transition group hover:bg-violet-700 p-2 rounded-lg"
+                    onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
+                    className="flex flex-col items-center text-white transition group hover:bg-violet-700 p-2 rounded-lg cursor-pointer"
                   >
                     <div className="group-hover:rotate-90 transition-all">
                       <SvgSettings />
@@ -94,7 +94,7 @@ export const Header = () => {
                 <li>
                   <a
                     onClick={() => signOut()}
-                    className="flex flex-col items-center text-white transition hover:bg-violet-700 p-2 rounded-lg"
+                    className="flex flex-col items-center text-white transition hover:bg-violet-700 p-2 rounded-lg cursor-pointer"
                   >
                     <SvgLogOut />
                     {t('header.logout')}
@@ -105,7 +105,6 @@ export const Header = () => {
           </div>
         </Container>
       </header>
-      {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)}></SettingsModal>}
     </>
   );
 };

@@ -1,5 +1,4 @@
 import {
-  ActionType,
   Avatar,
   AvatarSize,
   Button,
@@ -10,9 +9,6 @@ import {
   HeadingTags,
   IconLink,
   IconLinkColors,
-  InteractionButton,
-  Label,
-  LabelSizes,
   Link,
   Paragraph,
   ParagraphSizes,
@@ -21,21 +17,82 @@ import {
   SvgLocation,
   SvgProfile,
   SvgSettings,
-  SvgTime,
   Tabs,
 } from '@smartive-education/design-system-component-library-lobsome';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { useSession } from 'next-auth/react';
+import { useQuery } from '@tanstack/react-query';
+import { User } from '../../types/user';
+import { ResponseInterface } from '../../types/generic-response';
+import { Post } from '../../types/post';
+import { getServerSession, Session } from 'next-auth';
+import fetchUser from '../../services/fetch-user';
+import { InfinitePostList } from '../../components/infinite-post-list';
+import React, { useContext, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
+import { premiumModalContext } from '../../providers/premium-modal.provider';
+import CustomInfiniteHook from '../../hooks/custom-infinite.hook';
+import { authOptions } from '../api/auth/[...nextauth]';
+import fetchPosts from '../../services/fetch-posts';
+import CustomSearchInfiniteHook from '../../hooks/custom-search-infinite.hook';
+import { SkeletonCard } from '../../components/skeleton/skeleton-card';
 
-export default function MyProfilePage() {
+type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
+
+enum TabEnum {
+  MUMBLES = 'mumbles',
+  LIKES = 'likes',
+}
+
+export default function MyProfilePage({ user, posts }: PageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
+  const { data: session } = useSession();
+  const [activeTab, setActiveTab] = useState(TabEnum.MUMBLES);
+  const { t } = useTranslation('myprofile');
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
+
+  const userQuery = useQuery({
+    queryKey: ['user', user.id],
+    queryFn: () => {
+      return fetchUser(user.id, session?.accessToken);
+    },
+    initialData: user,
+  });
+
+  const myLikedPosts = CustomSearchInfiniteHook({
+    accessToken: session?.accessToken,
+    likedBy: [user.id],
+  });
+
+  const myPosts = CustomInfiniteHook({
+    initialData: posts?.data,
+    initialHasMore: !!posts.next,
+    accessToken: session?.accessToken,
+    creator: user.id,
+  });
+
+  const setTab = (tab: TabEnum) => {
+    if (tab === TabEnum.LIKES) {
+      myLikedPosts.reset();
+    }
+    setActiveTab(tab);
+  };
+
   return (
     <>
-      <div className="bg-slate-100 p-10 flex items-center justify-center ">
+      <div className="bg-slate-100 py-10 flex items-center justify-center ">
         <div className="w-[680px]">
           <div className="space-y-8">
             <div className="relative ">
               <div className="absolute -bottom-24 right-8">
-                <Avatar alt="" showBorder size={AvatarSize.XL} src="https://i.pravatar.cc/" />
+                <Avatar alt="" showBorder size={AvatarSize.XL} src={userQuery.data.avatarUrl || '/images/anonymous.png'} />
                 <div className="absolute -mt-14 right-4">
-                  <Button color={ButtonColors.SLATE} label="Button Test" showOnlyIcon size={ButtonSizes.M}>
+                  <Button
+                    onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
+                    color={ButtonColors.SLATE}
+                    label="Button Test"
+                    showOnlyIcon
+                    size={ButtonSizes.M}
+                  >
                     <SvgEdit />
                   </Button>
                 </div>
@@ -46,92 +103,92 @@ export default function MyProfilePage() {
             </div>
             <div className="mt-6">
               <div className="flex items-center space-x-2">
-                <Heading tag={HeadingTags.HEADING3}>Damian Caduff</Heading>
-                <SvgSettings />
+                <Heading tag={HeadingTags.HEADING3}>
+                  {userQuery.data.firstName} {userQuery.data.lastName}
+                </Heading>
+                <Link onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}>
+                  <SvgSettings />
+                </Link>
               </div>
               <div className="flex space-x-5 mt-2">
-                <IconLink color={IconLinkColors.VIOLET} label="damiancaduff">
+                <IconLink color={IconLinkColors.VIOLET} label={userQuery.data.userName}>
                   <SvgProfile />
                 </IconLink>
-                <IconLink color={IconLinkColors.SLATE} label="Chur">
+                <IconLink color={IconLinkColors.SLATE} label={t('profile-header.place')}>
                   <SvgLocation />
                 </IconLink>
-                <IconLink color={IconLinkColors.SLATE} label="Mitglied seit 35 Jahren">
+                <IconLink color={IconLinkColors.SLATE} label={t('profile-header.register-date')}>
                   <SvgCalendar />
                 </IconLink>
               </div>
               <div className="mt-3">
-                <Paragraph size={ParagraphSizes.m}>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum, earum expedita harum inventore placeat
-                  quibusdam quos reprehenderit tenetur voluptas? Ab corporis, deleniti earum eius, eos error harum hic iure
-                  magnam maiores mollitia nemo porro ut?
-                </Paragraph>
+                <Paragraph size={ParagraphSizes.m}> {t('profile-header.profile-intro')}</Paragraph>
               </div>
             </div>
             <div className="flex  items-center space-x-5 mb-7">
               <Tabs
-                activeId={1}
+                activeId={activeTab}
                 items={[
                   {
-                    id: 1,
-                    label: 'Meine Mumbles',
+                    id: TabEnum.MUMBLES,
+                    label: t('switch-tab.my-mumbles'),
                   },
                   {
-                    id: 2,
-                    label: 'Deine Likes',
+                    id: TabEnum.LIKES,
+                    label: t('switch-tab.your-likes'),
                   },
                 ]}
-                onChange={function noRefCheck() {
-                  console.log('clicked');
-                }}
+                onChange={(item) => setTab(item.id as TabEnum)}
               />
             </div>
           </div>
 
-          <div className="mt-4 space-y-4">
-            <Card>
-              {/* mumble */}
-              <div>
-                <div className="absolute -left-8 top-4">
-                  <Avatar alt="Portrait of Matilda" showBorder size={AvatarSize.M} src="https://i.pravatar.cc/" />
-                </div>
-                <div className="mb-1">
-                  <Label size={LabelSizes.xl}>Damian Caduff</Label>
-                </div>
-                <div className="flex space-x-5 mb-6">
-                  <IconLink color={IconLinkColors.VIOLET} label="damiancaduff">
-                    <SvgProfile />
-                  </IconLink>
-                  <IconLink color={IconLinkColors.SLATE} label="vor 17 Minuten">
-                    <SvgTime />
-                  </IconLink>
-                </div>
-                <div className="mb-6">
-                  <Paragraph size={ParagraphSizes.m}>
-                    Ttincidunt vulputate in commodo. Sed vestibulum interdum sed neque.
-                  </Paragraph>
-                </div>
-                <div className="flex space-x-1 mb-8">
-                  <Link>#casfee</Link>
-                  <Link>#goOST</Link>
-                  <Link>#smartive</Link>
-                </div>
-                <div className="flex relative -left-3 space-x-8">
-                  <InteractionButton label="Comments" type={ActionType.REPLY}>
-                    Comments
-                  </InteractionButton>
-                  <InteractionButton label="Likes" type={ActionType.LIKE}>
-                    Likes
-                  </InteractionButton>
-                  <InteractionButton label="Share" type={ActionType.SHARE}>
-                    Share
-                  </InteractionButton>
-                </div>
-              </div>
-            </Card>
-          </div>
+          {activeTab === TabEnum.MUMBLES ? (
+            <div className="mt-8 space-y-4">
+              <InfinitePostList
+                posts={myPosts.data}
+                fetchNext={myPosts.fetchNext}
+                hasMore={myPosts.hasMore}
+                error={myPosts.error}
+              />
+            </div>
+          ) : (
+            <div className="mt-8 space-y-4">
+              {myLikedPosts.isLoading && (
+                <Card>
+                  <SkeletonCard />
+                </Card>
+              )}
+              <InfinitePostList
+                posts={myLikedPosts.data}
+                fetchNext={myLikedPosts.fetchNext}
+                hasMore={myLikedPosts.hasMore}
+                error={myLikedPosts.error}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  try {
+    const session = await getServerSession(req, res, authOptions);
+    const [user, posts] = await Promise.all([
+      fetchUser(session?.user.id as string, session?.accessToken),
+      fetchPosts(session?.accessToken, { offset: 0, limit: 5, creator: session?.user.id }),
+    ]);
+
+    return { props: { user, posts, session } };
+  } catch (e) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+      props: {},
+    };
+  }
+};

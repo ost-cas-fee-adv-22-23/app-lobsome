@@ -11,9 +11,10 @@ export const HashtagSpinnerAnimation = ({
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    window.setInterval(() => {
+    const intervalId = setInterval(() => {
       setIndex((index) => (index >= keywords.length - 1 ? 0 : index + 1));
     }, 2000);
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => setKeyword(() => keywords[index]), [index]);
