@@ -68,7 +68,7 @@ npm run lint - Runs next lint to set up Next.js' built-in ESLint configuration
 After successful build and start you should be able to access the app on your browser at: <br> <br>
 url: http://localhost:3000
 
-
+<br>
 
 
 ## 🔒 Authentication
