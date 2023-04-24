@@ -1,38 +1,128 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+<p align="center">
+  <img src="https://i.imgur.com/Hjz6EvH.png"/>
+</p>
 
-First, run the development server:
+# 🐼 Mumble App by Team LOBSOME 🐼
 
-```bash
-npm run dev
-# or
-yarn dev
+
+
+In this project, we implemented the [Mumble Design System](https://smartive-education.github.io/design-system-component-library-lobsome/?path=/story/welcome-hello--page/). 
+Throughout the project, we worked collaboratively to achieve a clean, fast and maintainable code. 
+By the end of the project, we hope to have gained a deeper understanding of the architecture around [NextJS](https://nextjs.org/), 
+as well as developed important skills that will serve us well in future academic and professional pursuits.
+
+We look forward to sharing our findings and experiences with our classmates and instructors, 
+and to learning from their projects as well. Thanks for checking out our Project!
+
+<br>
+You can find the deployed and ready to use app here:
+
+### [https://app-lobsome.vercel.app/](https://app-lobsome.vercel.app/)
+
+
+<br>
+
+<hr>
+
+
+## ✈️ Getting Started
+
+Instructions on how to set up and install the project on a local machine.
+<br>
+
+
+
+### Installing
+
+Step-by-step instructions on how to set up the project.
+
+To use this library you need to add an .npmrc file with an auth-token
+
+```
+@smartive-education:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken={auth-token}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+npm install
+```
+<br>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+After successful installation you can use one of the following commands:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```
+npm run dev - Runs next dev to start Next.js in development mode
+```
+```
+npm run build - Runs next build to build the application for production usage
+```
+```
+npm run start - Runs next start to start a Next.js production server
+```
+```
+npm run lint - Runs next lint to set up Next.js' built-in ESLint configuration
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<br>
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
+After successful build and start you should be able to access the app on your browser at: <br> <br>
+url: http://localhost:3000
 
 
 
+<hr>
+
+## 🔒 Authentication
+
+To access the content of mumble you need to setup an account at [Zitadel](https://cas-fee-advanced-ocvdad.zitadel.cloud/ui/login/loginname). 
+
+After successful registration you should be able to login via http://localhost:3000/login.
+
+
+
+<br>
+<hr>
+
+
+## 🛠️ Libraries and Tools
+
+### Conventional Commits
+
+We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for consistent commit messages.
+- The commit message should be structured as follows:
+
+```
+<type>[(scope)]: <description>
+```
+
+For Example:
+```
+feat(button): added hover and action styling for button
+```
+
+### next-translate
+The main goal of [next-translate](https://github.com/aralroca/next-translate) is to keep the translations as simple as possible in a Next.js environment.
+
+Next-translate has two parts: Next.js plugin + i18n API.
+
+
+
+### TanStack Query
+
+[TanStack Query](https://tanstack.com/query/v4/docs/react/overview) (FKA React Query) is often described as the missing data-fetching library for web applications, 
+but in more technical terms, it makes fetching, caching, synchronizing and updating server state in 
+your web applications a breeze.
+
+
+<br>
+
+<hr>
+
+## 👨🏻‍💻  Authors
+
+* **Alexander Widmer** - [Github](https://github.com/ejthan)
+* **Milos Djuric** - [Github](https://github.com/djurango)
+
+
+<br><br>
