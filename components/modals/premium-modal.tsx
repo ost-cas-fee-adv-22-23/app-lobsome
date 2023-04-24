@@ -29,11 +29,7 @@ export const PremiumModal = ({ onClose }: SettingsModalProps) => {
           </Label>
           <Paragraph size={ParagraphSizes.m}>{t('premium-modal.modal-text')}</Paragraph>
           <Paragraph size={ParagraphSizes.m}>{t('premium-modal.modal-benefits')}</Paragraph>
-          <img
-            className={'w-64'}
-            src="http://www.quickmeme.com/img/1c/1c83e1c0388b35d43f2401543c9e214fb31892cec0d3966c7fe11955b5efe18f.jpg"
-            alt=""
-          />
+          <img className={'w-64'} src="/images/anonymous.png" alt="" />
         </div>
       </ModalContainer>
     </div>
