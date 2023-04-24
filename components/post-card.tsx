@@ -20,6 +20,7 @@ import { Post } from '../types/post';
 import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { Like } from './like';
+import useTranslation from 'next-translate/useTranslation';
 
 type PostCardProps = {
   post: Post;
@@ -27,6 +28,8 @@ type PostCardProps = {
 };
 
 export const PostCard = ({ post, children }: PostCardProps) => {
+  const { t } = useTranslation('common');
+
   const wrapTags = () => {
     const textArray = post.text.split(' ');
     return textArray.map((str, index) => {
@@ -44,12 +47,13 @@ export const PostCard = ({ post, children }: PostCardProps) => {
     });
   };
 
+  const count = post.replyCount;
   return (
     <Card key={post.id}>
       <div className="absolute -left-8 top-4">
         <Link href={'/profile/' + post.creator.id}>
           <Avatar
-            alt="Portrait of Matilda"
+            alt={post.creator.userName}
             showBorder
             size={AvatarSize.M}
             src={post.creator.avatarUrl || '/images/anonymous.png'}
@@ -82,13 +86,14 @@ export const PostCard = ({ post, children }: PostCardProps) => {
       </div>
       <div className="flex relative -left-3 space-x-8">
         <Link href={'/mumble/' + post.id}>
-          <InteractionButton label="Comments" type={ActionType.REPLY}>
-            {post.replyCount} Comments
+          <InteractionButton label={t('post-card.comments_many')} type={ActionType.REPLY}>
+            {post.replyCount == 0 ? '' : post.replyCount + ' '}
+            {t('post-card.comments', { count })}
           </InteractionButton>
         </Link>
-        <Like count={post.likeCount} likedByUser={post.likedByUser} postId={post.id} />
-        <InteractionButton label="Share" type={ActionType.SHARE}>
-          Share
+        <Like countLike={post.likeCount} likedByUser={post.likedByUser} postId={post.id} />
+        <InteractionButton label={t('post-card.share')} type={ActionType.SHARE}>
+          {t('post-card.share')}
         </InteractionButton>
       </div>
 

@@ -29,6 +29,7 @@ import { InfinitePostList, InfinitePostListMode } from '../../components/infinit
 import { authOptions } from '../api/auth/[...nextauth]';
 import fetchPosts from '../../services/fetch-posts';
 import { useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
@@ -40,6 +41,7 @@ enum TabEnum {
 export default function MyProfilePage({ user, posts }: PageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
   const { data } = useSession();
   const [activeTab, setActiveTab] = useState(TabEnum.MUMBLES);
+  const { t } = useTranslation('myprofile');
 
   const userQuery = useQuery({
     queryKey: ['user', user.id],
@@ -78,19 +80,15 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
                 <IconLink color={IconLinkColors.VIOLET} label={userQuery.data.userName}>
                   <SvgProfile />
                 </IconLink>
-                <IconLink color={IconLinkColors.SLATE} label="Chur">
+                <IconLink color={IconLinkColors.SLATE} label={t('profile-header.place')}>
                   <SvgLocation />
                 </IconLink>
-                <IconLink color={IconLinkColors.SLATE} label="Mitglied seit 4 Wochen">
+                <IconLink color={IconLinkColors.SLATE} label={t('profile-header.register-date')}>
                   <SvgCalendar />
                 </IconLink>
               </div>
               <div className="mt-3">
-                <Paragraph size={ParagraphSizes.m}>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum, earum expedita harum inventore placeat
-                  quibusdam quos reprehenderit tenetur voluptas? Ab corporis, deleniti earum eius, eos error harum hic iure
-                  magnam maiores mollitia nemo porro ut?
-                </Paragraph>
+                <Paragraph size={ParagraphSizes.m}> {t('profile-header.profile-intro')}</Paragraph>
               </div>
             </div>
             <div className="flex  items-center space-x-5 mb-7">
@@ -99,11 +97,11 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
                 items={[
                   {
                     id: TabEnum.MUMBLES,
-                    label: 'Meine Mumbles',
+                    label: t('switch-tab.my-mumbles'),
                   },
                   {
                     id: TabEnum.LIKES,
-                    label: 'Deine Likes',
+                    label: t('switch-tab.your-likes'),
                   },
                 ]}
                 onChange={(item) => setActiveTab(item.id as TabEnum)}

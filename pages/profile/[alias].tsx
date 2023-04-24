@@ -31,12 +31,14 @@ import { ResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
 import React, { useContext } from 'react';
 import { premiumModalContext } from '../../providers/premium-modal.provider';
+import useTranslation from 'next-translate/useTranslation';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
 export default function ProfilePage({ user, posts }: PageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
   const { data } = useSession();
   const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
+  const { t } = useTranslation('profile');
 
   const userQuery = useQuery({
     queryKey: ['user', user.id],
@@ -72,30 +74,25 @@ export default function ProfilePage({ user, posts }: PageProps): InferGetServerS
                 <IconLink color={IconLinkColors.VIOLET} label={userQuery.data.userName}>
                   <SvgProfile />
                 </IconLink>
-                <IconLink color={IconLinkColors.SLATE} label="Chur">
+                <IconLink color={IconLinkColors.SLATE} label={t('profile-header.place')}>
                   <SvgLocation />
                 </IconLink>
-                <IconLink color={IconLinkColors.SLATE} label={userQuery.data.created}>
+                <IconLink color={IconLinkColors.SLATE} label={t('profile-header.register-date')}>
                   <SvgCalendar />
                 </IconLink>
               </div>
               <div className="mt-3">
-                {/* TODO add field to user (in backend) */}
-                <Paragraph size={ParagraphSizes.m}>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum, earum expedita harum inventore placeat
-                  quibusdam quos reprehenderit tenetur voluptas? Ab corporis, deleniti earum eius, eos error harum hic iure
-                  magnam maiores mollitia nemo porro ut?
-                </Paragraph>
+                <Paragraph size={ParagraphSizes.m}>{t('profile-header.profile-intro')}</Paragraph>
               </div>
             </div>
             <div className="flex justify-end items-center space-x-5 mb-7">
               <Label size={LabelSizes.m} color={LabelColors.SLATE}>
-                Du folgst {userQuery.data.firstName} {userQuery.data.lastName} nicht.
+                {t('follow.not-following')} {userQuery.data.firstName} {userQuery.data.lastName}
               </Label>
               <Button
                 onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
                 color={ButtonColors.SLATE}
-                label="Follow"
+                label={t('follow.follow-button')}
                 size={ButtonSizes.M}
               >
                 <SvgCancel />
