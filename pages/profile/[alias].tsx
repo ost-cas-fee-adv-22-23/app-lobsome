@@ -21,35 +21,51 @@ import {
   SvgCalendar,
   SvgCancel,
   SvgLocation,
+  SvgMumble,
   SvgProfile,
 } from '@smartive-education/design-system-component-library-lobsome';
 import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]';
 import fetchPosts from '../../services/fetch-posts';
-import { InfinitePostList, InfinitePostListMode } from '../../components/infinite-post-list';
+import { InfinitePostList } from '../../components/infinite-post-list';
 import { ResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
 import React, { useContext } from 'react';
 import { premiumModalContext } from '../../providers/premium-modal.provider';
 import useTranslation from 'next-translate/useTranslation';
+import CustomInfiniteHook from '../../hooks/custom-infinite.hook';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
 export default function ProfilePage({ user, posts }: PageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
-  const { data } = useSession();
+  const { data: session } = useSession();
   const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
   const { t } = useTranslation('profile');
 
   const userQuery = useQuery({
     queryKey: ['user', user.id],
     queryFn: async () => {
-      return await fetchUser(user.id, data?.accessToken);
+      return await fetchUser(user.id, session?.accessToken);
     },
     initialData: user,
   });
 
+  const { data, fetchNext, hasMore, error, reset, hasNew } = CustomInfiniteHook({
+    initialData: posts?.data,
+    initialHasMore: !!posts.next,
+    accessToken: session?.accessToken,
+    creator: user.id,
+  });
+
   return (
     <div>
+      {hasNew && (
+        <div className="z-50 flex justify-center items-center fixed mt-5 inset-x-0">
+          <Button color={ButtonColors.GRADIENT} label="Load new posts!" size={ButtonSizes.M} onClick={reset}>
+            <SvgMumble />
+          </Button>
+        </div>
+      )}
       <div className="bg-slate-100 py-10 flex items-center justify-center ">
         <div className="w-[680px]">
           <div className="space-y-8">
@@ -101,7 +117,7 @@ export default function ProfilePage({ user, posts }: PageProps): InferGetServerS
           </div>
 
           <div className="mt-8 space-y-4">
-            <InfinitePostList posts={posts} queryKey={'userPosts'} creator={user.id} mode={InfinitePostListMode.DEFAULT} />
+            <InfinitePostList posts={data} fetchNext={fetchNext} hasMore={hasMore} error={error} />
           </div>
         </div>
       </div>

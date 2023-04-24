@@ -5,14 +5,16 @@ import fetchUser from './fetch-user';
 import { decodeTime } from 'ulid';
 
 export interface PaginationParams {
-  offset: number;
+  offset?: number;
   limit: number;
   creator?: string;
+  olderThanId?: string;
+  newerThanId?: string;
 }
 
 export default async (
   token: string | undefined,
-  { offset = 0, limit = 10, creator }: PaginationParams
+  { offset, limit = 10, creator, olderThanId, newerThanId }: PaginationParams
 ): Promise<ResponseInterface<Post>> => {
   try {
     const config: RequestInit = {
@@ -23,12 +25,27 @@ export default async (
       },
     };
 
-    const postsResponse = await getRequest<ResponseInterface<ApiPost>>(
-      `https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts?${
-        creator ? `creator=${creator}&` : ''
-      }offset=${offset}&limit=${limit}`,
-      config
-    );
+    const requestUrl = new URL('https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts');
+
+    if (creator) {
+      requestUrl.searchParams.append('creator', creator);
+    }
+
+    if (offset) {
+      requestUrl.searchParams.append('offset', offset.toString());
+    }
+
+    if (olderThanId) {
+      requestUrl.searchParams.append('olderThan', olderThanId);
+    }
+
+    if (newerThanId) {
+      requestUrl.searchParams.append('newerThan', newerThanId);
+    }
+
+    requestUrl.searchParams.append('limit', limit.toString());
+
+    const postsResponse = await getRequest<ResponseInterface<ApiPost>>(requestUrl.toString(), config);
     const posts: Post[] = await Promise.all(
       postsResponse.data.map(async (item) => {
         const user = await fetchUser(item.creator, token);

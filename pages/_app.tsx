@@ -8,7 +8,7 @@ import { QueryClient } from '@tanstack/query-core';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { User } from '../types/user';
 import PremiumModalProvider from '../providers/premium-modal.provider';
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -29,6 +29,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <PremiumModalProvider>{getLayout(<Component {...pageProps} />)}</PremiumModalProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </SessionProvider>
   );

@@ -1,7 +1,7 @@
 import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { InfinitePostList, InfinitePostListMode } from '../../components/infinite-post-list';
+import { InfinitePostList } from '../../components/infinite-post-list';
 import { SearchResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
 import searchPosts from '../../services/search-posts';
@@ -9,11 +9,25 @@ import { useRouter } from 'next/router';
 import { Heading, HeadingColors, HeadingTags } from '@smartive-education/design-system-component-library-lobsome';
 import React from 'react';
 import useTranslation from 'next-translate/useTranslation';
+import CustomSearchInfiniteHook from '../../hooks/custom-search-infinite.hook';
+import { useSession } from 'next-auth/react';
 
-type PageProps = { searchResult: SearchResponseInterface<Post>; session: Session };
-export default function SearchResultPage({ searchResult }: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
+type PageProps = { searchResult: SearchResponseInterface<Post>; session: Session; term: string };
+export default function SearchResultPage({
+  searchResult,
+  term,
+}: PageProps): InferGetStaticPropsType<typeof getServerSideProps> {
   const { query } = useRouter();
+  const { data: session } = useSession();
   const { t } = useTranslation('search-tag');
+
+  const { data, fetchNext, hasMore, error } = CustomSearchInfiniteHook({
+    initialData: searchResult.data,
+    initialHasMore: !!searchResult.next,
+    accessToken: session?.accessToken,
+    text: term,
+  });
+
   return (
     <>
       <div className="py-8">
@@ -21,12 +35,7 @@ export default function SearchResultPage({ searchResult }: PageProps): InferGetS
           {t('title', { tag: query.term })}
         </Heading>
       </div>
-      <InfinitePostList
-        posts={searchResult}
-        queryKey="tagPosts"
-        mode={InfinitePostListMode.SEARCH}
-        tag={query.term as string}
-      />
+      <InfinitePostList posts={data} fetchNext={fetchNext} hasMore={hasMore} error={error} />
     </>
   );
 }
@@ -40,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query: { term }, 
       limit: 10,
     });
 
-    return { props: { searchResult, session } };
+    return { props: { searchResult, session, term } };
   } catch (e) {
     return {
       redirect: {

@@ -4,6 +4,7 @@ import {
   Button,
   ButtonColors,
   ButtonSizes,
+  Card,
   Heading,
   HeadingTags,
   IconLink,
@@ -26,12 +27,15 @@ import { ResponseInterface } from '../../types/generic-response';
 import { Post } from '../../types/post';
 import { getServerSession, Session } from 'next-auth';
 import fetchUser from '../../services/fetch-user';
-import { InfinitePostList, InfinitePostListMode } from '../../components/infinite-post-list';
-import { authOptions } from '../api/auth/[...nextauth]';
-import fetchPosts from '../../services/fetch-posts';
-import { useContext, useState } from 'react';
+import { InfinitePostList } from '../../components/infinite-post-list';
+import React, { useContext, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { premiumModalContext } from '../../providers/premium-modal.provider';
+import CustomInfiniteHook from '../../hooks/custom-infinite.hook';
+import { authOptions } from '../api/auth/[...nextauth]';
+import fetchPosts from '../../services/fetch-posts';
+import CustomSearchInfiniteHook from '../../hooks/custom-search-infinite.hook';
+import { SkeletonCard } from '../../components/skeleton/skeleton-card';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
@@ -41,7 +45,7 @@ enum TabEnum {
 }
 
 export default function MyProfilePage({ user, posts }: PageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
-  const { data } = useSession();
+  const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState(TabEnum.MUMBLES);
   const { t } = useTranslation('myprofile');
   const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
@@ -49,10 +53,29 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
   const userQuery = useQuery({
     queryKey: ['user', user.id],
     queryFn: () => {
-      return fetchUser(user.id, data?.accessToken);
+      return fetchUser(user.id, session?.accessToken);
     },
     initialData: user,
   });
+
+  const myLikedPosts = CustomSearchInfiniteHook({
+    accessToken: session?.accessToken,
+    likedBy: [user.id],
+  });
+
+  const myPosts = CustomInfiniteHook({
+    initialData: posts?.data,
+    initialHasMore: !!posts.next,
+    accessToken: session?.accessToken,
+    creator: user.id,
+  });
+
+  const setTab = (tab: TabEnum) => {
+    if (tab === TabEnum.LIKES) {
+      myLikedPosts.reset();
+    }
+    setActiveTab(tab);
+  };
 
   return (
     <>
@@ -115,18 +138,33 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
                     label: t('switch-tab.your-likes'),
                   },
                 ]}
-                onChange={(item) => setActiveTab(item.id as TabEnum)}
+                onChange={(item) => setTab(item.id as TabEnum)}
               />
             </div>
           </div>
 
           {activeTab === TabEnum.MUMBLES ? (
             <div className="mt-8 space-y-4">
-              <InfinitePostList posts={posts} queryKey={'userPosts'} creator={user.id} mode={InfinitePostListMode.DEFAULT} />
+              <InfinitePostList
+                posts={myPosts.data}
+                fetchNext={myPosts.fetchNext}
+                hasMore={myPosts.hasMore}
+                error={myPosts.error}
+              />
             </div>
           ) : (
             <div className="mt-8 space-y-4">
-              <InfinitePostList queryKey={'userLikedPosts'} likedBy={user.id} mode={InfinitePostListMode.LIKES} />
+              {myLikedPosts.isLoading && (
+                <Card>
+                  <SkeletonCard />
+                </Card>
+              )}
+              <InfinitePostList
+                posts={myLikedPosts.data}
+                fetchNext={myLikedPosts.fetchNext}
+                hasMore={myLikedPosts.hasMore}
+                error={myLikedPosts.error}
+              />
             </div>
           )}
         </div>

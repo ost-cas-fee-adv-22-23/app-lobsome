@@ -9,7 +9,6 @@ import {
 import { FileUploadModal } from './modals/file-upload-modal';
 import useTranslation from 'next-translate/useTranslation';
 import { CreatePost } from '../types/post';
-import Image from 'next/image';
 
 type WriteCardProps = {
   onSend: (message: CreatePost) => void;
