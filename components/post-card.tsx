@@ -15,12 +15,13 @@ import {
   SvgTime,
 } from '@smartive-education/design-system-component-library-lobsome';
 import Image from 'next/image';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import { Post } from '../types/post';
 import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { Like } from './like';
 import useTranslation from 'next-translate/useTranslation';
+import { premiumModalContext } from '../providers/premium-modal.provider';
 
 type PostCardProps = {
   post: Post;
@@ -29,6 +30,7 @@ type PostCardProps = {
 
 export const PostCard = ({ post, children }: PostCardProps) => {
   const { t } = useTranslation('common');
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
 
   const wrapTags = () => {
     const textArray = post.text.split(' ');
@@ -92,7 +94,11 @@ export const PostCard = ({ post, children }: PostCardProps) => {
           </InteractionButton>
         </Link>
         <Like countLike={post.likeCount} likedByUser={post.likedByUser} postId={post.id} />
-        <InteractionButton label={t('post-card.share')} type={ActionType.SHARE}>
+        <InteractionButton
+          onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
+          label={t('post-card.share')}
+          type={ActionType.SHARE}
+        >
           {t('post-card.share')}
         </InteractionButton>
       </div>

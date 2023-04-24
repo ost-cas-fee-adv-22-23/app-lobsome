@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   ActionType,
   Avatar,
@@ -18,6 +18,7 @@ import { Like } from './like';
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
+import { premiumModalContext } from '../providers/premium-modal.provider';
 
 type ReplyCardProps = {
   reply: Reply;
@@ -25,6 +26,7 @@ type ReplyCardProps = {
 
 export const ReplyCard = ({ reply }: ReplyCardProps) => {
   const { t } = useTranslation('common');
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
 
   return (
     <div>
@@ -55,12 +57,19 @@ export const ReplyCard = ({ reply }: ReplyCardProps) => {
       </div>
 
       <div className="flex relative -left-3 space-x-8">
-        {/* TODO add feature to API */}
-        {/*<InteractionButton label="Comments" type={ActionType.REPLY}>*/}
-        {/*  Comments*/}
-        {/*</InteractionButton>*/}
+        <InteractionButton
+          onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
+          label="Comments"
+          type={ActionType.REPLY}
+        >
+          Comments
+        </InteractionButton>
         <Like countLike={reply.likeCount} likedByUser={reply.likedByUser} postId={reply.id} />
-        <InteractionButton label={t('premium-modal.modal-title')} type={ActionType.SHARE}>
+        <InteractionButton
+          onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
+          label={t('premium-modal.modal-title')}
+          type={ActionType.SHARE}
+        >
           {t('post-card.share')}
         </InteractionButton>
       </div>

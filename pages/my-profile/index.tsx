@@ -8,6 +8,7 @@ import {
   HeadingTags,
   IconLink,
   IconLinkColors,
+  Link,
   Paragraph,
   ParagraphSizes,
   SvgCalendar,
@@ -28,8 +29,9 @@ import fetchUser from '../../services/fetch-user';
 import { InfinitePostList, InfinitePostListMode } from '../../components/infinite-post-list';
 import { authOptions } from '../api/auth/[...nextauth]';
 import fetchPosts from '../../services/fetch-posts';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
+import { premiumModalContext } from '../../providers/premium-modal.provider';
 
 type PageProps = { user: User; posts: ResponseInterface<Post>; session: Session };
 
@@ -42,6 +44,7 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
   const { data } = useSession();
   const [activeTab, setActiveTab] = useState(TabEnum.MUMBLES);
   const { t } = useTranslation('myprofile');
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useContext(premiumModalContext);
 
   const userQuery = useQuery({
     queryKey: ['user', user.id],
@@ -60,7 +63,13 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
               <div className="absolute -bottom-24 right-8">
                 <Avatar alt="" showBorder size={AvatarSize.XL} src={userQuery.data.avatarUrl || '/images/anonymous.png'} />
                 <div className="absolute -mt-14 right-4">
-                  <Button color={ButtonColors.SLATE} label="Button Test" showOnlyIcon size={ButtonSizes.M}>
+                  <Button
+                    onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
+                    color={ButtonColors.SLATE}
+                    label="Button Test"
+                    showOnlyIcon
+                    size={ButtonSizes.M}
+                  >
                     <SvgEdit />
                   </Button>
                 </div>
@@ -74,7 +83,9 @@ export default function MyProfilePage({ user, posts }: PageProps): InferGetServe
                 <Heading tag={HeadingTags.HEADING3}>
                   {userQuery.data.firstName} {userQuery.data.lastName}
                 </Heading>
-                <SvgSettings />
+                <Link onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}>
+                  <SvgSettings />
+                </Link>
               </div>
               <div className="flex space-x-5 mt-2">
                 <IconLink color={IconLinkColors.VIOLET} label={userQuery.data.userName}>
