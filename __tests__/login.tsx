@@ -11,11 +11,7 @@ const useRouter = jest.spyOn(require('next/router'), 'useRouter');
 describe('loads and displays login page', () => {
   test('it should render the title properly', () => {
     (useSession as jest.Mock).mockReturnValue([false, false]);
-    render(
-      <PremiumModalProvider>
-        <Login />
-      </PremiumModalProvider>
-    );
+    render(<Login />);
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('login:title');
   });
@@ -26,11 +22,7 @@ describe('loads and displays login page', () => {
       query: { callbackUrl: 'http://test.test' },
     }));
 
-    render(
-      <PremiumModalProvider>
-        <Login />
-      </PremiumModalProvider>
-    );
+    render(<Login />);
 
     await userEvent.click(screen.getByTestId('zitadel-login-button'));
 
@@ -69,11 +61,7 @@ describe('loads and displays login page', () => {
   test('shows password when eye icon is clicked and reverse', async () => {
     // Arrange
     (useSession as jest.Mock).mockReturnValue([false, false]);
-    render(
-      <PremiumModalProvider>
-        <Login />
-      </PremiumModalProvider>
-    );
+    render(<Login />);
 
     await userEvent.click(screen.getByTestId('show-password'));
 
@@ -82,5 +70,18 @@ describe('loads and displays login page', () => {
     await userEvent.click(screen.getByTestId('show-password'));
 
     expect(screen.getByLabelText('login:label-password')).toHaveAttribute('type', 'password');
+  });
+
+  test('renders logout form when authenticated', () => {
+    // Arrange
+    (useSession as jest.Mock).mockReturnValue({ data: {} });
+
+    // Act
+    render(<Login />);
+
+    // Assert
+    expect(screen.getByText('login:text-leaving')).toBeInTheDocument();
+    expect(screen.getByText('login:back-to-home')).toBeInTheDocument();
+    expect(screen.getByText('login:label-logout')).toBeInTheDocument();
   });
 });
