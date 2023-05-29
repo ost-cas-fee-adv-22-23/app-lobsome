@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { Container } from '../components/container';
+import { Container } from '../../components/container';
 import { Button } from '@smartive-education/design-system-component-library-lobsome';
 
 it('renders container unchanged', () => {

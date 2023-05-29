@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Login from '../pages/login';
-import PremiumModalProvider from '../providers/premium-modal.provider';
+import Login from '../../pages/login';
+import PremiumModalProvider from '../../providers/premium-modal.provider';
 import { signIn, useSession } from 'next-auth/react';
 import userEvent from '@testing-library/user-event';
 
