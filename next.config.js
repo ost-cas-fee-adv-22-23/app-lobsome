@@ -24,6 +24,7 @@ const nextConfig = {
       },
     ],
   },
+  output: 'standalone',
 };
 
 module.exports = () => plugins.reduce((acc, next) => next(acc), nextConfig);
