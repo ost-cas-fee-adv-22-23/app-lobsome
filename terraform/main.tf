@@ -1,11 +1,11 @@
 locals {
-  name = "app-lobsome"
+  name       = "app-lobsome"
   gcp_region = "europe-west6"
 }
 
 provider "google" {
   project = "mumble-389511"
-  region = local.gcp_region
+  region  = local.gcp_region
 }
 
 data "google_project" "project" {
