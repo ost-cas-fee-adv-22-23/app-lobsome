@@ -52,7 +52,7 @@ jobs:
       - name: Google Cloud Credentials
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{ secrets.TF_DEPLOYER_KEY }}'
+          credentials_json: '${{ secrets.GCR_JSON_KEY }}'
 
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
