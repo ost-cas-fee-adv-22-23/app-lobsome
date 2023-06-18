@@ -38,7 +38,7 @@ resource "google_cloud_run_service" "app-lobsome" {
   template {
     spec {
       containers {
-        image = "europe-west6-docker.pkg.dev/mumble-389511/mumble-repo/app-lobsome"
+        image = "europe-west6-docker.pkg.dev/mumble-389511/mumble-repo/app-lobsome:latest"
 
         resources {
           limits = {
