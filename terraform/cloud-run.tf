@@ -63,7 +63,7 @@ resource "google_cloud_run_service" "app-lobsome" {
 
         env {
           name  = "NEXTAUTH_SECRET"
-          value = "${random_uuid.nextauth_secret.result}"
+          value = random_uuid.nextauth_secret.result
         }
 
         env {
