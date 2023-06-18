@@ -31,7 +31,7 @@ jobs:
             europe-west6-docker.pkg.dev/mumble-389511/mumble-repo/app-lobsome:latest
             europe-west6-docker.pkg.dev/mumble-389511/mumble-repo/app-lobsome:${{ github.sha }}
           secrets: |
-            "npmrc=${{ secrets.NPM_RC }}"
+            "npm=${{ secrets.NPM_RC }}"
 
   terraform:
     name: 'Terraform deploy to gcp'
