@@ -53,6 +53,7 @@ function Login() {
                       <SvgMumble />
                     </Button>
                     <Button
+                      data-testid="zitadel-login-button"
                       fullWidth={true}
                       label={t('login:label-login-zidatel')}
                       onClick={() => signIn('zitadel', { callbackUrl: router.query.callbackUrl as string })}
