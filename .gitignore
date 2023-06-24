@@ -45,3 +45,5 @@ next-env.d.ts
 
 .idea
 .npmrc
+
+/terraform/.terraform
