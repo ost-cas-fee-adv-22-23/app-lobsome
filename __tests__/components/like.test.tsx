@@ -5,7 +5,7 @@ import { Like } from '../../components/like';
 import putLike from '../../services/put-like';
 import userEvent from '@testing-library/user-event';
 import deleteLike from '../../services/delete-like';
-import { TestWrapper } from '../helpers/query-client-wrapper';
+import { TestWrapper } from '../../helpers/query-client-wrapper';
 
 jest.mock('../../services/put-like');
 jest.mock('../../services/delete-like');
@@ -78,23 +78,4 @@ describe('testing the like component', () => {
       expect(screen.getByText('9 post-card.likes')).toBeInTheDocument();
     });
   });
-
-  // test('reset state if error occurs in mutation', async () => {
-  //   (useSession as jest.Mock).mockReturnValue({ data: { accessToken: 'abc' } });
-  //   (putLike as jest.Mock).mockResolvedValue(new Promise((resolve, reject) => reject('Error')));
-  //
-  //   render(
-  //     <TestWrapper>
-  //       <Like postId={postId} countLike={countLike} likedByUser={false} />
-  //     </TestWrapper>
-  //   );
-  //
-  //   await userEvent.click(screen.getByRole('button'));
-  //
-  //   await waitFor(() => {
-  //     expect(putLike).toHaveBeenCalledTimes(2);
-  //     expect(putLike).toHaveBeenCalledWith('abc', postId);
-  //     expect(screen.getByText('10 post-card.likes')).toBeInTheDocument();
-  //   });
-  // });
 });

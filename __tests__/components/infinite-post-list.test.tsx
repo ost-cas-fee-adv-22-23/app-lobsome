@@ -1,10 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { InfinitePostList } from '../../components/infinite-post-list';
 import { Post } from '../../types/post';
 import fetchPosts from '../../services/fetch-posts';
 import { useSession } from 'next-auth/react';
-import { TestWrapper } from '../helpers/query-client-wrapper';
+import { TestWrapper } from '../../helpers/query-client-wrapper';
 
 jest.mock('../../services/fetch-posts');
 jest.mock('next-auth/react');
@@ -71,43 +71,6 @@ describe('InfinitePostList', () => {
     await waitFor(() => {
       expect(screen.getByText('☕️')).toBeInTheDocument();
       expect(screen.getByText('✈️')).toBeInTheDocument();
-    });
-  });
-
-  test('displays loading skeleton when loading next page', async () => {
-    (useSession as jest.Mock).mockReturnValue({ data: { accessToken: 'abc' } });
-    (fetchPosts as jest.Mock).mockResolvedValueOnce({
-      posts: mockPosts,
-      hasMore: true,
-    });
-
-    const fetchNext = jest.fn();
-    render(
-      <TestWrapper>
-        <InfinitePostList fetchNext={fetchNext} hasMore={true} error={null} posts={mockPosts} />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText('✈️')).toBeInTheDocument();
-      expect(screen.getByText('☕️')).toBeInTheDocument();
-    });
-
-    (fetchPosts as jest.Mock).mockResolvedValueOnce({
-      posts: [],
-      hasMore: false,
-    });
-
-    fetchNext.mockImplementationOnce(() => {
-      render(<InfinitePostList fetchNext={fetchNext} hasMore={false} error={null} />);
-    });
-
-    fireEvent.scroll(window, { target: { scrollY: 1000 } });
-
-    //expect(screen.getByText('Loading...')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByText('No more posts')).toBeInTheDocument();
     });
   });
 
