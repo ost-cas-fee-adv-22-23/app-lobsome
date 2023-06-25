@@ -24,7 +24,7 @@ resource "google_project_iam_member" "cloud-runner-svc" {
 }
 
 variable "commit_hash" {
-  type = string
+  type        = string
   description = "value of the commit hash of the Docker image to deploy"
 }
 
