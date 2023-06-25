@@ -20,3 +20,9 @@ jobs:
     needs: [jest-unit-test]
     uses: ./.github/workflows/deploy-terraform.yml
     secrets: inherit
+
+  trigger-playwright-test:
+    name: E2E test with playwright
+    needs: [trigger-deploy-terraform]
+    uses: ./.github/workflows/playwright.yml
+    secrets: inherit
