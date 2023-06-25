@@ -41,10 +41,11 @@ function Login() {
                   <Heading color={HeadingColors.SLATE}>{t('login:title')}</Heading>
                   <Input label={t('login:label-email')}></Input>
                   <Input label={t('login:label-password')} type={showPassword ? 'text' : 'password'}>
-                    <SvgEye onClick={() => setShowPassword(!showPassword)} />
+                    <SvgEye data-testid="show-password" onClick={() => setShowPassword(!showPassword)} />
                   </Input>
                   <div className="space-y-3 pt-6">
                     <Button
+                      data-testid="simple-login-button"
                       onClick={() => setIsPremiumModalOpen(!isPremiumModalOpen)}
                       fullWidth={true}
                       label={t('login:label-login')}

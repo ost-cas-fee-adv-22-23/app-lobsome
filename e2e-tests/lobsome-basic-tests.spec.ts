@@ -1,4 +1,4 @@
-import { test as setup, test } from '@playwright/test';
+import { test as setup } from '@playwright/test';
 
 setup('authenticate as test user', async ({ page }) => {
   await page.goto('/login');
