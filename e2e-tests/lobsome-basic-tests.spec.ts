@@ -1,7 +1,7 @@
 import { test as setup, test } from '@playwright/test';
 
 setup('authenticate as test user', async ({ page }) => {
-  await page.goto('http://localhost:3000/login');
+  await page.goto('/login');
   await page.getByTestId('zitadel-login-button').click();
   const usernameField = page.getByPlaceholder('username');
   await usernameField.fill(process.env.ZITADEL_USERNAME as string);
