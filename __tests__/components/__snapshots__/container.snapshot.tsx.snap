@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders container unchanged 1`] = `
+<div>
+  <div
+    class="container lg:max-w-[680px] h-full"
+  >
+    <h1>
+      Test
+    </h1>
+    <button
+      class="flex flex-row items-center justify-center text-white font-semibold leading-4 rounded-lg false bg-slate-600 hover:bg-slate-700 hover:outline hover:outline-slate-100 hover:outline-[3px] active:outline-slate-200 gap-2 p-3"
+    >
+      Test
+    </button>
+  </div>
+</div>
+`;
