@@ -11,6 +11,7 @@ setup('authenticate as test user', async ({ page }) => {
   await passwordField.fill(process.env.ZITADEL_PASSWORD as string);
   const passwordFwdBtn = page.getByText('next');
   await passwordFwdBtn.click();
+  await page.goto('/');
   await page.getByText('Willkommen auf Mumble').isVisible();
 });
 
@@ -25,7 +26,10 @@ setup('logout', async ({ page }) => {
   await passwordField.fill(process.env.ZITADEL_PASSWORD as string);
   const passwordFwdBtn = page.getByText('next');
   await passwordFwdBtn.click();
+  await page.waitForLoadState('networkidle');
+  await page.goto('/');
   await page.getByText('Willkommen auf Mumble').isVisible();
+  await page.waitForLoadState('networkidle');
   await page.getByText('Log out').click();
   await page.getByText('Login').isVisible();
 });
@@ -41,6 +45,8 @@ test('test write mumble', async ({ page }) => {
   await passwordField.fill(process.env.ZITADEL_PASSWORD as string);
   const passwordFwdBtn = page.getByText('next');
   await passwordFwdBtn.click();
+  await page.waitForLoadState('networkidle');
+  await page.goto('/');
   await page.getByText('Willkommen auf Mumble').isVisible();
   await page.getByPlaceholder('Write something!').click();
   await page.getByPlaceholder('Write something!').fill('This test was brought to you by #TeamLobsome');
@@ -60,6 +66,8 @@ test('like a mumble', async ({ page }) => {
   await passwordField.fill(process.env.ZITADEL_PASSWORD as string);
   const passwordFwdBtn = page.getByText('next');
   await passwordFwdBtn.click();
+  await page.waitForLoadState('networkidle');
+  await page.goto('/');
   await page.getByText('Willkommen auf Mumble').isVisible();
   await page.getByText('No likes').first().click();
   await page.getByText('1 Like').first().isVisible();
@@ -77,6 +85,7 @@ test('comment mumble', async ({ page }) => {
   const passwordFwdBtn = page.getByText('next');
   await passwordFwdBtn.click();
   await page.waitForLoadState('networkidle');
+  await page.goto('/');
   await page.getByText('Willkommen auf Mumble').isVisible();
   await page.locator('div:nth-child(6) > a > .flex').first().click();
   await page.getByPlaceholder('Write something!').click();
