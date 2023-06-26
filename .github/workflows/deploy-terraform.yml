@@ -71,4 +71,6 @@ jobs:
         # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
+        env:
+          TF_VAR_commit_hash: ${{ github.sha }}
         working-directory: terraform
