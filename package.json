@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "husky install",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --debug",
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
