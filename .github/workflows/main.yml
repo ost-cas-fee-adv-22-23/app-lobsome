@@ -1,0 +1,28 @@
+name: Orchestrate actions on push to main
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  jest-unit-test:
+    name: Unit testing with jest
+    uses: ./.github/workflows/jest-unit-test.yml
+    secrets: inherit
+
+  trigger-deploy-terraform:
+    name: Deploy with terraform to gcp
+    needs: [jest-unit-test]
+    uses: ./.github/workflows/deploy-terraform.yml
+    secrets: inherit
+
+  trigger-playwright-test:
+    name: E2E test with playwright
+    needs: [trigger-deploy-terraform]
+    uses: ./.github/workflows/playwright.yml
+    secrets: inherit
