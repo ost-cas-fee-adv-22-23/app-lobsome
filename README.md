@@ -18,7 +18,7 @@ and to learning from their projects as well. Thanks for checking out our Project
 <br>
 You can find the deployed and ready to use app here:
 
-### [https://app-lobsome.vercel.app/](https://app-lobsome.vercel.app/)
+### [https://app-lobsome-m54ssuukna-oa.a.run.app/](https://app-lobsome-m54ssuukna-oa.a.run.app/)
 
 
 <br>
@@ -110,6 +110,34 @@ Next-translate has two parts: Next.js plugin + i18n API.
 [TanStack Query](https://tanstack.com/query/v4/docs/react/overview) (FKA React Query) is often described as the missing data-fetching library for web applications, 
 but in more technical terms, it makes fetching, caching, synchronizing and updating server state in 
 your web applications a breeze.
+
+
+<br>
+
+## ⚙️ Dev Ops
+
+### Security
+
+[ZITADEL](https://zitadel.com/) gives developers all they need to integrate identity management. Easy as pie. Ready when you are — because serverless. At yours or ours — because open source.
+
+### Testing
+
+[Playwright](https://playwright.dev/) enables reliable end-to-end testing for modern web apps.
+```
+npm run test:e2e - Running all tests
+```
+
+[Jest](https://jestjs.io/) is a delightful JavaScript Testing Framework with a focus on simplicity.
+```
+npm run test - Run watch mode
+```
+```
+npm run test:ci - Runs in a CI environment
+```
+
+
+### Docker
+To build Mumble as a Docker image locally, you need a local .npmrc file with the credentials for the Smartive Github Organisation credentials. $docker build -t app-lobsome . --secret id=npm,src=.npmrc
 
 
 <br>
